@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_generic_services = true;
+package org.baeldung.grpc;
+
+message MedicineRequest {
+  string medicineId = 1;
+}
+
+message MedicineResponse {
+  string result = 1;
+}
+
+service MedicineService {
+  rpc getMedicine(MedicineRequest) returns (MedicineResponse);
+}
+
