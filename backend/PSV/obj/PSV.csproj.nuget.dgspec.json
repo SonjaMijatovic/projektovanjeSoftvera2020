@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\testx\\Desktop\\PSV\\PSV\\PSV.csproj": {}
+    "E:\\PSV\\PSV\\PSV.csproj": {}
   },
   "projects": {
-    "C:\\Users\\testx\\Desktop\\PSV\\PSV\\PSV.csproj": {
+    "E:\\PSV\\PSV\\PSV.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\testx\\Desktop\\PSV\\PSV\\PSV.csproj",
+        "projectUniqueName": "E:\\PSV\\PSV\\PSV.csproj",
         "projectName": "PSV",
-        "projectPath": "C:\\Users\\testx\\Desktop\\PSV\\PSV\\PSV.csproj",
+        "projectPath": "E:\\PSV\\PSV\\PSV.csproj",
         "packagesPath": "C:\\Users\\testx\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\testx\\Desktop\\PSV\\PSV\\obj\\",
+        "outputPath": "E:\\PSV\\PSV\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
