@@ -18,7 +18,7 @@ namespace PSV.Model
         public PageModel(int page, int perPage, string search)
         {
             this.page = page;
-            this.perPage = perPage;
+            this.perPage = perPage > 0 ? perPage : 30;
             this.search = search == null ? string.Empty : search;
         }
 

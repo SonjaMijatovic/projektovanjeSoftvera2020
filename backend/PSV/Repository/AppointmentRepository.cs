@@ -14,5 +14,12 @@ namespace PSV.Repository
         {
 
         }
+
+        public override PageResponse<Appointment> GetPage(PageModel model)
+        {
+            var query = BackendContext.Appointments.Include("Patient").Include("Doctor").Where(x => (x.Deleted == false ));
+
+            return new PageResponse<Appointment>(query.OrderBy(x => x.Id).Skip(model.Page).Take(model.PerPage).ToList(), query.Count());
+        }
     }
 }

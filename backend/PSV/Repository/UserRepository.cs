@@ -3,6 +3,7 @@ using PSV.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace PSV.Repository
@@ -29,7 +30,7 @@ namespace PSV.Repository
 
 
 
-            return new PageResponse<User>(query.Skip(model.Page).Take(model.PerPage).ToList(), query.Count());
+            return new PageResponse<User>(query.OrderBy(x => x.Id).Skip(model.Page).Take(model.PerPage).ToList(), query.Count());
         }
     }
 }

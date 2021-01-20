@@ -9,6 +9,49 @@ namespace PSV.Service
 {
     public class UserService
     {
+        public void Block(int id) {
+
+            try {
+                using (var unitOfWork = new UnitOfWork(new BackendContext()))
+                {
+                    User user = unitOfWork.Users.Get(id);
+
+                    if (user == null) {
+                        return;
+                    }
+
+                    user.Blocked = true;
+                    unitOfWork.Context.Users.Attach(user);
+                    unitOfWork.Context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Complete();
+                }
+            }
+            catch (Exception e) { }
+        }
+
+        public void Unlock(int id)
+        {
+
+            try
+            {
+                using (var unitOfWork = new UnitOfWork(new BackendContext()))
+                {
+                    User user = unitOfWork.Users.Get(id);
+
+                    if (user == null)
+                    {
+                        return;
+                    }
+
+                    user.Blocked = false;
+                    unitOfWork.Context.Users.Attach(user);
+                    unitOfWork.Context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Complete();
+                }
+            }
+            catch (Exception e) { }
+        }
+
         public User Add(User user)
         {
             if (user == null)
@@ -23,6 +66,17 @@ namespace PSV.Service
                     user.DateCreated = DateTime.Now;
                     user.DateUpdated = DateTime.Now;
                     user.Deleted = false;
+                    user.Blocked = false;
+
+                    if(user.DoctorType != null)
+                    {
+                        user.DoctorType = unitOfWork.DoctorTypes.Get(user.DoctorType.Id);
+                    }
+
+                    if (user.UserType == null || user.UserType == "") {
+                        user.UserType = "PATIENT";
+                    }
+
                     unitOfWork.Users.Add(user);
                     unitOfWork.Complete();
                 }
