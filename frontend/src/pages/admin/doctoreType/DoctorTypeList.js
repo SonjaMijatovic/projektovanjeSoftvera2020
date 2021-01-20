@@ -1,35 +1,28 @@
 import React from 'react'
 import TablePage from "../../../common/TablePage";
-import {deleteUser, getUsers, blockUser, unblockUser} from "../../../services/admin/UserAdminService";
+import {deleteUser, getUsers,} from "../../../services/admin/UserAdminService";
 import {bindActionCreators} from "redux";
 import * as Actions from "../../../actions/Actions";
 import {withRouter} from "react-router-dom";
 import connect from "react-redux/es/connect/connect";
 import strings from "../../../localization";
-import AddUser from "./AddUser";
 import {withSnackbar} from "notistack";
 import {ListItemIcon, ListItemText, Menu, MenuItem, TableCell} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVert from '@material-ui/icons/MoreVert';
 import UndoIcon from '@material-ui/icons/Undo';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddDoctorType from './AddDoctorType';
 import { getDoctorTypes } from '../../../services/DoctorTypeService';
 
-
-class UserList extends TablePage {
+class DoctorTypeList extends TablePage {
 
     tableDescription = [
-        { key: 'email', label: strings.userList.email },
-        { key: 'firstName', label: strings.userList.firstName },
-        { key: 'lastName', label: strings.userList.lastName },
-        { key: 'userType', label: "User type" },
-        { key: 'blocked', label: "Blocked", transform: 'renderColumnDeleted' }
+        { key: 'name', label: strings.doctorTypeList.name },
     ];
 
     constructor(props) {
         super(props);
-
-        this.state.doctoreTypes = [];
     }
 
     fetchData() {
@@ -38,7 +31,7 @@ class UserList extends TablePage {
             lockTable: true
         });
 
-        getUsers({
+        getDoctorTypes({
             page: this.state.searchData.page,
             perPage: this.state.searchData.perPage,
             search: this.state.searchData.search.toLowerCase()
@@ -54,22 +47,6 @@ class UserList extends TablePage {
                 lockTable: false
             });
         });
-
-        getDoctorTypes({
-            page: this.state.searchData.page,
-            perPage: this.state.searchData.perPage,
-            search: this.state.searchData.search.toLowerCase()
-        }).then(response => {
-
-            if(!response.ok) {
-                return;
-            }
-
-            this.setState({
-                doctoreTypes: response.data.entities ? response.data.entities : [],
-                
-            });
-        });
     }
 
     componentDidMount() {
@@ -77,11 +54,11 @@ class UserList extends TablePage {
     }
 
     getPageHeader() {
-        return <h1>{ strings.userList.pageTitle }</h1>;
+        return <h1>{ strings.doctorTypeList.doctorTypes }</h1>;
     }
 
     renderAddContent() {
-        return <AddUser doctoreTypes={ this.state.doctoreTypes } onCancel={ this.onCancel } onFinish={ this.onFinish }/>
+        return <AddDoctorType onCancel={ this.onCancel } onFinish={ this.onFinish }/>
     }
 
     delete(item) {
@@ -108,17 +85,6 @@ class UserList extends TablePage {
         });
     }
 
-    handleUnblock(item) {
-        unblockUser(item.id).then(response => {
-            this.fetchData();
-        })
-    }
-
-    handleBlock(item) {
-        blockUser(item.id).then(response => {
-            this.fetchData();
-        });
-    }
 
     renderRowMenu(index, item) {
 
@@ -150,35 +116,6 @@ class UserList extends TablePage {
                                 <ListItemText inset primary={ strings.table.delete }/>
                             </MenuItem>
                         }
-                        {
-                            item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleRestore(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.undo }/>
-                            </MenuItem>
-                        }
-
-                        {
-                            item.blocked &&
-                            <MenuItem onClick={ () => this.handleUnblock(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Unblock"/>
-                            </MenuItem>
-                        }
-
-{
-                            !item.blocked &&
-                            <MenuItem onClick={ () => this.handleBlock(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Block"/>
-                            </MenuItem>
-                        }
 
                     </Menu>
                 }
@@ -200,4 +137,4 @@ function mapStateToProps({ menuReducers })
     return { menu: menuReducers };
 }
 
-export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(UserList)));
+export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(DoctorTypeList)));

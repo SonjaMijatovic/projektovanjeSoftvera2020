@@ -6,7 +6,6 @@ import * as Actions from "../../../actions/Actions";
 import {withRouter} from "react-router-dom";
 import connect from "react-redux/es/connect/connect";
 import strings from "../../../localization";
-import AddUser from "./AddUser";
 import {withSnackbar} from "notistack";
 import {ListItemIcon, ListItemText, Menu, MenuItem, TableCell} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,22 +13,34 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import UndoIcon from '@material-ui/icons/Undo';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { getDoctorTypes } from '../../../services/DoctorTypeService';
+import UserType from '../../../constants/UserType';
+import { getAppointments, cancelAppointment, reserveAppointment } from '../../../services/AppointmentService';
+import AddAppointment from './AddAppointment';
 
 
-class UserList extends TablePage {
+class AppointmentList extends TablePage {
 
     tableDescription = [
-        { key: 'email', label: strings.userList.email },
-        { key: 'firstName', label: strings.userList.firstName },
-        { key: 'lastName', label: strings.userList.lastName },
-        { key: 'userType', label: "User type" },
-        { key: 'blocked', label: "Blocked", transform: 'renderColumnDeleted' }
+        { key: 'date', label: "Date" },
+        { key: 'doctor', label: "Doctor", transform: 'renderColumnUser' },
+        { key: 'patient', label: "Patient", transform: 'renderColumnUser' },
+        { key: 'isFree', label: "Is free", transform: 'renderColumnDeleted' }
     ];
 
     constructor(props) {
         super(props);
 
         this.state.doctoreTypes = [];
+    }
+
+    renderColumnUser(item) {
+
+        if(!item) 
+        {
+            return '';
+        }
+
+        return item.firstName + " " + item.lastName;
     }
 
     fetchData() {
@@ -48,14 +59,21 @@ class UserList extends TablePage {
                 return;
             }
 
+            let result = [];
+
+            for(let item of response.data.entities) {
+                if (item.userType == UserType.DOCTOR) {
+                    result.push(item);
+                }
+            }
+
             this.setState({
-                tableData: response.data.entities,
-                total: response.data.total,
-                lockTable: false
+                doctors: result,
+                
             });
         });
 
-        getDoctorTypes({
+        getAppointments({
             page: this.state.searchData.page,
             perPage: this.state.searchData.perPage,
             search: this.state.searchData.search.toLowerCase()
@@ -66,10 +84,13 @@ class UserList extends TablePage {
             }
 
             this.setState({
-                doctoreTypes: response.data.entities ? response.data.entities : [],
-                
+                tableData: response.data.entities,
+                total: response.data.total,
+                lockTable: false
             });
         });
+
+        
     }
 
     componentDidMount() {
@@ -77,11 +98,11 @@ class UserList extends TablePage {
     }
 
     getPageHeader() {
-        return <h1>{ strings.userList.pageTitle }</h1>;
+        return <h1>Appointments</h1>;
     }
 
     renderAddContent() {
-        return <AddUser doctoreTypes={ this.state.doctoreTypes } onCancel={ this.onCancel } onFinish={ this.onFinish }/>
+        return <AddAppointment doctors={ this.state.doctors } onCancel={ this.onCancel } onFinish={ this.onFinish }/>
     }
 
     delete(item) {
@@ -109,13 +130,13 @@ class UserList extends TablePage {
     }
 
     handleUnblock(item) {
-        unblockUser(item.id).then(response => {
+        cancelAppointment(item.id).then(response => {
             this.fetchData();
         })
     }
 
     handleBlock(item) {
-        blockUser(item.id).then(response => {
+        reserveAppointment(item.id).then(response => {
             this.fetchData();
         });
     }
@@ -161,22 +182,22 @@ class UserList extends TablePage {
                         }
 
                         {
-                            item.blocked &&
+                            !item.isFree &&
                             <MenuItem onClick={ () => this.handleUnblock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
-                                <ListItemText inset primary="Unblock"/>
+                                <ListItemText inset primary="Cancel"/>
                             </MenuItem>
                         }
 
 {
-                            !item.blocked &&
+                            item.isFree &&
                             <MenuItem onClick={ () => this.handleBlock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
-                                <ListItemText inset primary="Block"/>
+                                <ListItemText inset primary="Reserve"/>
                             </MenuItem>
                         }
 
@@ -200,4 +221,4 @@ function mapStateToProps({ menuReducers })
     return { menu: menuReducers };
 }
 
-export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(UserList)));
+export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(AppointmentList)));

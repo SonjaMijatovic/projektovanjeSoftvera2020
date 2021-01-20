@@ -8,16 +8,16 @@ import {Paper} from "@material-ui/core";
 import strings from "../../../localization";
 import Validators from "../../../constants/ValidatorTypes";
 import FormComponent from "../../../common/FormComponent";
-import UserForm from "../../../components/forms/admin/user/UserForm";
 import {addUser} from "../../../services/admin/UserAdminService";
 import {withSnackbar} from "notistack";
+import { addMedicine } from '../../../services/MedicineService';
+import MedicineForm from '../../../components/forms/admin/medicine/MedicineForm';
 
-class AddUser extends FormComponent {
+class AddMedicine extends FormComponent {
 
     validationList = {
-        email: [ {type: Validators.EMAIL } ],
-        firstName: [ {type: Validators.REQUIRED } ],
-        lastName: [ {type: Validators.REQUIRED } ]
+        name: [ {type: Validators.REQUIRED } ],
+        amount: [ {type: Validators.REQUIRED } ]
     };
 
     constructor(props) {
@@ -41,24 +41,18 @@ class AddUser extends FormComponent {
 
         this.showDrawerLoader();
 
-        let data = {
-            email: this.state.data.email,
-            firstName: this.state.data.firstName,
-            lastName: this.state.data.lastName,
-            password: this.state.data.password,
-            userType: this.state.data.userType ? this.state.data.userType.value : '',
-            doctorType:  this.state.data.doctorType ? { id: this.state.data.doctorType.id} : null
-        }
-
-        addUser(data).then(response => {
+        addMedicine({
+            name: this.state.data.name,
+            amount: parseFloat(this.state.data.amount)
+        }).then(response => {
 
             if(!response.ok) {
                 this.props.onFinish(null);
-                this.props.enqueueSnackbar(strings.addUser.errorAddingUser, { variant: 'error' });
+                this.props.enqueueSnackbar("Error adding medicine", { variant: 'error' });
                 return;
             }
 
-            this.props.enqueueSnackbar(strings.addUser.userAdded, { variant: 'success' });
+            this.props.enqueueSnackbar("Medicine added", { variant: 'success' });
             this.props.onFinish(response.data.user);
 
             this.hideDrawerLoader();
@@ -75,7 +69,7 @@ class AddUser extends FormComponent {
                 </div>
 
                 <Paper className='paper'>
-                    <UserForm doctoreTypes={ this.props.doctoreTypes } onChange={ this.changeData } onSubmit={ this.submit }
+                    <MedicineForm onChange={ this.changeData } onSubmit={ this.submit }
                                 data={ this.state.data } errors={ this.state.errors } onCancel={ this.props.onCancel }/>
                 </Paper>
 
@@ -98,4 +92,4 @@ function mapStateToProps({ menuReducers, siteDataReducers })
     return { menu: menuReducers, siteData: siteDataReducers };
 }
 
-export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(AddUser)));
+export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(AddMedicine)));

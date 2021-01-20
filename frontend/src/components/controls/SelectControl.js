@@ -17,7 +17,9 @@ class SelectControl extends BaseControl {
             hasError: props.hasError,
             error: props.error ? props.error : '',
             placeholder: props.placeholder ? props.placeholder : 'Select...',
-            isLoading: props.isLoading ? props.isLoading : false
+            isLoading: props.isLoading ? props.isLoading : false,
+            disabled: false,
+            inputRef: props.inputRef
         }
     }
 
@@ -29,7 +31,8 @@ class SelectControl extends BaseControl {
             error: props.error ? props.error : '',
             selected: props.selected ? props.selected : undefined,
             placeholder: props.placeholder ? props.placeholder : 'Select...',
-            isLoading: props.isLoading ? props.isLoading : false
+            isLoading: props.isLoading ? props.isLoading : false,
+            disabled: props.disabled
         })
 
     }
@@ -53,13 +56,14 @@ class SelectControl extends BaseControl {
     render() {
 
         return (
-            <div className={'select-control-container' + (this.state.hasError ? ' error' : '')}>
+            <div className={'select-control-container' + (this.state.hasError ? ' error' : '')} style={ this.props.style }>
                 {
                     this.props.label &&
                     <label>{ this.props.label }</label>
                 }
 
                 <Select
+                    isDisabled={this.state.disabled}
                     label={ this.props.label }
                     placeholder={ this.state.placeholder }
                     onChange={ (event) => this.onChange(event) }
@@ -67,6 +71,7 @@ class SelectControl extends BaseControl {
                     value={this.getValue()}
                     isClearable={ this.props.isClearable }
                     isLoading={this.state.isLoading}
+                    ref={this.state.inputRef}
                 />
 
                 {
