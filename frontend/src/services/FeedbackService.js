@@ -5,6 +5,10 @@ export async function getFeedbacks(data) {
     return await request('/api/feedbacks/all', data);
 }
 
+export async function getPublicFeedbacks(data) {
+    return await request('/api/feedbacks/public', data);
+}
+
 export async function addFeedback(data) {
     return await request('/api/feedbacks', data, HttpMethod.POST);
 }

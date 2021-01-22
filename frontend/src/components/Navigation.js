@@ -58,7 +58,7 @@ class Navigation extends Component {
     }
 
     isAdmin() {
-        return this.props.auth.user && this.props.auth.user.admin;
+        return this.props.auth.user && this.props.auth.user.userType == 'ADMIN';
     }
 
     render() {
@@ -73,12 +73,23 @@ class Navigation extends Component {
                             <SendIcon/>
                         </div>
                         <div className='title'>
-                            <h2>Some Title</h2>
+                            <h2>PSV</h2>
                         </div>
                     </div>
                     <List component="nav">
+                        <Link to={'/'} className={ this.isCurrentPath('/') ? 'navigation-link active' : 'navigation-link'} >
+                            <ListItem className='navigation-item'>
+
+                                <ListItemIcon className='navigation-icon'>
+                                    <SendIcon/>
+                                </ListItemIcon>
+
+                                <ListItemText inset primary='Home' className='navigation-text'/>
+
+                            </ListItem>
+                        </Link>
                         {
-                            /*this.isAdmin()*/ true &&
+                            this.isAdmin() &&
                             <React.Fragment>
                                 <Link to={'/users'} className={ this.isCurrentPath('/users') ? 'navigation-link active' : 'navigation-link'} >
                                     <ListItem className='navigation-item'>
@@ -113,30 +124,50 @@ class Navigation extends Component {
 
                                     </ListItem>
                                 </Link>
-                                <Link to={'/feedbacks'} className={ this.isCurrentPath('/feedbacks') ? 'navigation-link active' : 'navigation-link'} >
-                                    <ListItem className='navigation-item'>
-
-                                        <ListItemIcon className='navigation-icon'>
-                                            <SendIcon/>
-                                        </ListItemIcon>
-
-                                        <ListItemText inset primary='Feedbacks' className='navigation-text'/>
-
-                                    </ListItem>
-                                    </Link>
-                                <Link to={'/appointments'} className={ this.isCurrentPath('/appointments') ? 'navigation-link active' : 'navigation-link'} >
-                                    <ListItem className='navigation-item'>
-
-                                        <ListItemIcon className='navigation-icon'>
-                                            <SendIcon/>
-                                        </ListItemIcon>
-
-                                        <ListItemText inset primary='Appointments' className='navigation-text'/>
-
-                                    </ListItem>
-                                    </Link>
-                            </React.Fragment>
+                                </React.Fragment>
                         }
+                        <React.Fragment>
+                            <Link to={'/feedbacks'} className={ this.isCurrentPath('/feedbacks') ? 'navigation-link active' : 'navigation-link'} >
+                                <ListItem className='navigation-item'>
+
+                                    <ListItemIcon className='navigation-icon'>
+                                        <SendIcon/>
+                                    </ListItemIcon>
+
+                                    <ListItemText inset primary='Feedbacks' className='navigation-text'/>
+
+                                </ListItem>
+                            </Link>
+                            <Link to={'/appointments'} className={ this.isCurrentPath('/appointments') ? 'navigation-link active' : 'navigation-link'} >
+                                <ListItem className='navigation-item'>
+
+                                    <ListItemIcon className='navigation-icon'>
+                                        <SendIcon/>
+                                    </ListItemIcon>
+
+                                    <ListItemText inset primary='Appointments' className='navigation-text'/>
+
+                                </ListItem>
+                            </Link>
+
+                            {
+                                this.props.auth.user && this.props.auth.user.userType == "DOCTOR" &&
+                                <Link to={'/recepies'} className={ this.isCurrentPath('/recepies') ? 'navigation-link active' : 'navigation-link'} >
+                                    <ListItem className='navigation-item'>
+
+                                        <ListItemIcon className='navigation-icon'>
+                                            <SendIcon/>
+                                        </ListItemIcon>
+
+                                        <ListItemText inset primary='Recepies' className='navigation-text'/>
+
+                                    </ListItem>
+                                </Link>
+                            }
+
+                            
+                        </React.Fragment>
+                        
                     </List>
                 </div>
 

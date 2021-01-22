@@ -7,7 +7,7 @@ import {withRouter} from "react-router-dom";
 import connect from "react-redux/es/connect/connect";
 import strings from "../../../localization";
 import {withSnackbar} from "notistack";
-import {ListItemIcon, ListItemText, Menu, MenuItem, TableCell} from "@material-ui/core";
+import {Button, ListItemIcon, ListItemText, Menu, MenuItem, TableCell} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVert from '@material-ui/icons/MoreVert';
 import UndoIcon from '@material-ui/icons/Undo';
@@ -16,6 +16,14 @@ import { getDoctorTypes } from '../../../services/DoctorTypeService';
 import UserType from '../../../constants/UserType';
 import { getAppointments, cancelAppointment, reserveAppointment } from '../../../services/AppointmentService';
 import AddAppointment from './AddAppointment';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import {
+ TextField, Drawer
+} from "@material-ui/core";
+import DrawerWrapper from "../../../common/DrawerWrapper";
+import SelectControl from '../../../components/controls/SelectControl';
+import DatePickerControl from '../../../components/controls/DatePickerControl';
 
 
 class AppointmentList extends TablePage {
@@ -31,6 +39,8 @@ class AppointmentList extends TablePage {
         super(props);
 
         this.state.doctoreTypes = [];
+
+        this.state.showAdd = this.props.auth.user.userType == "ADMIN"
     }
 
     renderColumnUser(item) {
@@ -41,6 +51,10 @@ class AppointmentList extends TablePage {
         }
 
         return item.firstName + " " + item.lastName;
+    }
+
+    componentDidMount() {
+
     }
 
     fetchData() {
@@ -207,6 +221,87 @@ class AppointmentList extends TablePage {
             </TableCell>
         );
     }
+
+    render() {
+
+        return (
+            <Grid id='table-page'>
+                { this.renderDialog(strings.table.confirmDelete, 'To subscribe to this website, please enter your email address here. We will send\n' +
+                    'updates occasionally.', this.cancelDelete, this.delete) }
+                <div className='header'>
+                    { this.getPageHeader() }
+
+                    <div className='filter-controls' style={{ display: 'flex',
+                flexDirection: 'flex-row', alignItems: 'center' }}>
+
+                    
+                            
+                            <div style={{ width: '250px' }}>
+                                <DatePickerControl
+                                    date={this.state.data.date}
+                                    name={'from'}
+                                    placeholder={ "From" }
+                                    onChange={this.changeData}
+                                />
+                            </div>
+
+                            <div style={{ width: '250px' }}>
+                                <DatePickerControl
+                                    date={this.state.data.date}
+                                    name={'to'}
+                                    placeholder={ "To" }
+                                    onChange={this.changeData}
+                                />
+                            </div>
+                            
+                            <div style={{ width: '150px' }}>
+                                <SelectControl
+                                    options={ this.state.doctors }
+                                    selected={ this.state.data.doctor }
+                                    onChange={ this.changeData }
+                                    label={ 'Doctor' }
+                                    name={ 'doctor' }
+                                    nameKey={ 'firstName' }
+                                    valueKey={ 'id' }
+                                />
+                            </div>
+
+                            <div style={{ width: '150px' }}>
+                                <SelectControl
+                                    options={ [
+                                        { value: 'DATE', name: 'Date' },
+                                        { value: 'DOCTOR', name: 'Doctor' }
+                                    ] }
+                                    selected={ this.state.data.type }
+                                    onChange={ this.changeData }
+                                    label={ 'Type' }
+                                    name={ 'type' }
+                                    nameKey={ 'name' }
+                                    valueKey={ 'value' }
+                                />
+                            </div>
+
+                            <Button onClick={ () => this.fetchData() } >Find</Button>
+                            
+
+                        {
+                            this.state.showAdd &&
+                            this.renderTableControls()
+                        }
+                    </div>
+                </div>
+                <Paper md={12}>
+                    { this.renderTable(this.state.tableData) }
+                </Paper>
+
+                <Drawer id='drawer' anchor='right' open={  this.showDrawer() } onClose={ () => this.setPageState(PageState.View) } >
+                    <DrawerWrapper onBack={ () => this.setPageState(PageState.View) }>
+                        { this.renderDrawerContent() }
+                    </DrawerWrapper>
+                </Drawer>
+            </Grid>
+        );
+    }
 }
 
 function mapDispatchToProps(dispatch)
@@ -216,9 +311,9 @@ function mapDispatchToProps(dispatch)
     }, dispatch);
 }
 
-function mapStateToProps({ menuReducers })
+function mapStateToProps({ menuReducers, authReducers })
 {
-    return { menu: menuReducers };
+    return { menu: menuReducers, auth: authReducers };
 }
 
 export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(AppointmentList)));

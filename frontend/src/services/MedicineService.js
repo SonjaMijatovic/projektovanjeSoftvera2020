@@ -9,6 +9,10 @@ export async function addMedicine(data) {
     return await request('/api/medicines', data, HttpMethod.POST);
 }
 
+export async function updateMedicine(id, amount) {
+    return await request('/api/medicines/' + id + '/' + amount, {}, HttpMethod.POST);
+}
+
 export async function deleteMedicine(id) {
     return await request('/api/medicines/' + id, {} , HttpMethod.DELETE);
 }

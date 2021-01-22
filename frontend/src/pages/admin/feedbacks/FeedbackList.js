@@ -102,6 +102,8 @@ class FeedbackList extends TablePage {
     renderRowMenu(index, item) {
 
         let ariaOwns = 'action-menu-' + index;
+        let userType = this.props.auth.user.userType;
+        console.log(userType);
 
         return(
             <TableCell>
@@ -121,26 +123,7 @@ class FeedbackList extends TablePage {
                         onClose={ () => this.handleMenuClose() }
                     >
                         {
-                            !item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleMenuDelete(item) }>
-                                <ListItemIcon>
-                                    <DeleteIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.delete }/>
-                            </MenuItem>
-                        }
-                        {
-                            item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleRestore(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.undo }/>
-                            </MenuItem>
-                        }
-
-                        {
-                            item.visible &&
+                            item.visible && userType == 'ADMIN' &&
                             <MenuItem onClick={ () => this.handleUnblock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
@@ -150,7 +133,7 @@ class FeedbackList extends TablePage {
                         }
 
 {
-                            !item.visible &&
+                            !item.visible && userType == 'ADMIN' &&
                             <MenuItem onClick={ () => this.handleBlock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
@@ -174,9 +157,9 @@ function mapDispatchToProps(dispatch)
     }, dispatch);
 }
 
-function mapStateToProps({ menuReducers })
+function mapStateToProps({ menuReducers, authReducers })
 {
-    return { menu: menuReducers };
+    return { menu: menuReducers, auth: authReducers };
 }
 
 export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(FeedbackList)));

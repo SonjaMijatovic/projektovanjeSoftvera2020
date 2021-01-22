@@ -52,6 +52,7 @@ class DatePickerControl extends BaseControl {
                     dateFormat={this.state.dateFormat}
                     showTimeSelect={this.state.showTimeSelect}
                     isClearable={ true }
+                    showTimeSelect
                 />
 
                 {

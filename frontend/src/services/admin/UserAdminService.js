@@ -23,5 +23,5 @@ export async function blockUser(id) {
 
 
 export async function unblockUser(id) {
-    return await request('/api/users/unblock' + id, {} , HttpMethod.POST);
+    return await request('/api/users/unblock/' + id, {} , HttpMethod.POST);
 }

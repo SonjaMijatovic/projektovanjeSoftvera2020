@@ -15,6 +15,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { getDoctorTypes } from '../../../services/DoctorTypeService';
 import { getMedicines } from '../../../services/MedicineService';
 import AddMedicine from './AddMedicine';
+import UpdateMedicine from './UpdateMedicine';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 class MedicineList extends TablePage {
 
@@ -56,36 +59,17 @@ class MedicineList extends TablePage {
     }
 
     getPageHeader() {
-        return <h1>{ strings.doctorTypeList.doctorTypes }</h1>;
+        return <h1>Medicines</h1>;
     }
 
     renderAddContent() {
         return <AddMedicine onCancel={ this.onCancel } onFinish={ this.onFinish }/>
     }
 
-    delete(item) {
-
-        this.setState({
-            lockTable: true
-        });
-
-        deleteUser(item.id).then(response => {
-
-            if(response && !response.ok) {
-                this.onFinish(null);
-                return;
-            }
-
-            this.props.enqueueSnackbar(strings.userList.userDelete, { variant: 'success' });
-
-            this.onFinish(item);
-            this.cancelDelete();
-
-            this.setState({
-                lockTable: false
-            });
-        });
+    renderEditContent(item) {
+        return <UpdateMedicine data={item} onCancel={ this.onCancel } onFinish={ this.onFinish }/>
     }
+
 
 
     renderRowMenu(index, item) {
@@ -109,13 +93,12 @@ class MedicineList extends TablePage {
                         open={ Boolean(this.state.anchorEl) }
                         onClose={ () => this.handleMenuClose() }
                     >
-                        {
-                            !item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleMenuDelete(item) }>
+{
+                            <MenuItem onClick={ () => this.handleMenuEdit(item) }>
                                 <ListItemIcon>
-                                    <DeleteIcon/>
+                                    <EditIcon/>
                                 </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.delete }/>
+                                <ListItemText inset primary={ "Update" }/>
                             </MenuItem>
                         }
 

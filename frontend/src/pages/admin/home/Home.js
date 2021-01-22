@@ -6,38 +6,26 @@ import * as Actions from "../../../actions/Actions";
 import {withRouter} from "react-router-dom";
 import connect from "react-redux/es/connect/connect";
 import strings from "../../../localization";
-import AddUser from "./AddUser";
 import {withSnackbar} from "notistack";
 import {ListItemIcon, ListItemText, Menu, MenuItem, TableCell} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVert from '@material-ui/icons/MoreVert';
 import UndoIcon from '@material-ui/icons/Undo';
-import { getDoctorTypes } from '../../../services/DoctorTypeService';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { getFeedbacks, getPublicFeedbacks, publishFeedback, unpublishFeedback } from '../../../services/FeedbackService';
 
 
-class UserList extends TablePage {
+class Home extends TablePage {
 
     tableDescription = [
-        { key: 'email', label: strings.userList.email },
-        { key: 'firstName', label: strings.userList.firstName },
-        { key: 'lastName', label: strings.userList.lastName },
-        { key: 'userType', label: "User type" },
-        { key: 'doctorType', label: "Doctor Type", transform: 'renderDoctorType' },
-        { key: 'blocked', label: "Blocked", transform: 'renderColumnDeleted' }
+        { key: 'content', label: "Content" },
     ];
-
-    renderDoctorType(item) {
-        if(!item) {
-            return '';
-        }
-
-        return item.name
-    }
 
     constructor(props) {
         super(props);
 
-        this.state.doctoreTypes = [];
+        this.state.showAdd = false;
+        this.state.showSearch = false;
     }
 
     fetchData() {
@@ -46,7 +34,7 @@ class UserList extends TablePage {
             lockTable: true
         });
 
-        getUsers({
+        getPublicFeedbacks({
             page: this.state.searchData.page,
             perPage: this.state.searchData.perPage,
             search: this.state.searchData.search.toLowerCase()
@@ -62,22 +50,6 @@ class UserList extends TablePage {
                 lockTable: false
             });
         });
-
-        getDoctorTypes({
-            page: this.state.searchData.page,
-            perPage: this.state.searchData.perPage,
-            search: this.state.searchData.search.toLowerCase()
-        }).then(response => {
-
-            if(!response.ok) {
-                return;
-            }
-
-            this.setState({
-                doctoreTypes: response.data.entities ? response.data.entities : [],
-                
-            });
-        });
     }
 
     componentDidMount() {
@@ -85,11 +57,11 @@ class UserList extends TablePage {
     }
 
     getPageHeader() {
-        return <h1>{ strings.userList.pageTitle }</h1>;
+        return <h1>Public Feedbacks</h1>;
     }
 
     renderAddContent() {
-        return <AddUser doctoreTypes={ this.state.doctoreTypes } onCancel={ this.onCancel } onFinish={ this.onFinish }/>
+        return '';
     }
 
     delete(item) {
@@ -116,14 +88,14 @@ class UserList extends TablePage {
         });
     }
 
-    handleUnblock(item) {
-        unblockUser(item.id).then(response => {
+    handleBlock(item) {
+        publishFeedback(item.id).then(response => {
             this.fetchData();
         })
     }
 
-    handleBlock(item) {
-        blockUser(item.id).then(response => {
+    handleUnblock(item) {
+        unpublishFeedback(item.id).then(response => {
             this.fetchData();
         });
     }
@@ -131,6 +103,8 @@ class UserList extends TablePage {
     renderRowMenu(index, item) {
 
         let ariaOwns = 'action-menu-' + index;
+        let userType = this.props.auth.user.userType;
+        console.log(userType);
 
         return(
             <TableCell>
@@ -149,24 +123,23 @@ class UserList extends TablePage {
                         open={ Boolean(this.state.anchorEl) }
                         onClose={ () => this.handleMenuClose() }
                     >
-
                         {
-                            item.blocked &&
+                            item.visible && userType == 'ADMIN' &&
                             <MenuItem onClick={ () => this.handleUnblock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
-                                <ListItemText inset primary="Unblock"/>
+                                <ListItemText inset primary="Unpublish"/>
                             </MenuItem>
                         }
 
 {
-                            !item.blocked &&
+                            !item.visible && userType == 'ADMIN' &&
                             <MenuItem onClick={ () => this.handleBlock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
-                                <ListItemText inset primary="Block"/>
+                                <ListItemText inset primary="Publish"/>
                             </MenuItem>
                         }
 
@@ -185,9 +158,9 @@ function mapDispatchToProps(dispatch)
     }, dispatch);
 }
 
-function mapStateToProps({ menuReducers })
+function mapStateToProps({ menuReducers, authReducers })
 {
-    return { menu: menuReducers };
+    return { menu: menuReducers, auth: authReducers };
 }
 
-export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(UserList)));
+export default withSnackbar(withRouter(connect(mapStateToProps, mapDispatchToProps)(Home)));

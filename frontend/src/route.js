@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './pages/Home';
+import Home from './pages/admin/home/Home';
 import Error from "./pages/Error";
 import Forbidden from "./pages/Forbidden";
 import NotFound from "./pages/NotFound";
@@ -14,6 +14,7 @@ import DoctorTypeList from './pages/admin/doctoreType/DoctorTypeList';
 import MedicineList from './pages/admin/medicines/MedicineList';
 import FeedbackList from './pages/admin/feedbacks/FeedbackList';
 import AppointmentsList from './pages/admin/appointments/AppointmentsList';
+import RecepieList from './pages/admin/recepies/RecepieList';
 
 let ROUTES = {
     Home: {
@@ -74,6 +75,11 @@ let ROUTES = {
     Appointments: {
         path: '/appointments',
         component: <AppointmentsList/>,
+        auth: true
+    },
+    RecepieList: {
+        path: '/recepies',
+        component: <RecepieList/>,
         auth: true
     }
 };
