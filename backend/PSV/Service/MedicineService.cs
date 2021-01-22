@@ -1,4 +1,5 @@
-﻿using PSV.Model;
+﻿
+using PSV.Model;
 using PSV.Repository;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,30 @@ namespace PSV.Service
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+        public void AddMore(int id, double amount) {
+            try
+            {
+                using (var unitOfWork = new UnitOfWork(new BackendContext()))
+                {
+                    Medicine medicine = unitOfWork.Medicines.Get(id);
+
+                    if(medicine == null)
+                    {
+                        return;
+                    }
+
+                    medicine.Amount += amount;
+
+                    unitOfWork.Medicines.Update(medicine);
+                    unitOfWork.Complete();
+                }
+            }
+            catch (Exception e)
+            {
+                return;
             }
         }
     }

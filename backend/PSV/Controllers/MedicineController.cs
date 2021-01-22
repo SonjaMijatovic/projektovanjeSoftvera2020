@@ -30,5 +30,14 @@ namespace PSV.Controllers
         {
             return Ok(mediciniService.Add(medicine));
         }
+
+        [Route("/api/medicines/{id}/{amount}")]
+        [HttpPost]
+        public async Task<IActionResult> AddMore(int id, double amount) {
+
+            mediciniService.AddMore(id, amount);
+            return Ok();
+        }
+
     }
 }

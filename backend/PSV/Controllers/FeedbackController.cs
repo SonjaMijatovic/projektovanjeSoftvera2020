@@ -21,7 +21,16 @@ namespace PSV.Controllers
         public PageResponse<Feedback> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
         {
 
-            return feedbackService.GetPage(new PageModel(page, perPage, search));
+            return feedbackService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()));
+        }
+
+        [Authorize]
+        [Route("/api/feedbacks/public")]
+        [HttpGet]
+        public PageResponse<Feedback> GetPublic()
+        {
+
+            return feedbackService.GetPublic(new PageModel());
         }
 
 

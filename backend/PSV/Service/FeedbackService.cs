@@ -71,6 +71,8 @@ namespace PSV.Service
                     feedback.Deleted = false;
                     feedback.Visible = false;
 
+                    User user = unitOfWork.Users.Get(feedback.User.Id);
+                    feedback.User = user;
                     unitOfWork.Feedbacks.Add(feedback);
                     unitOfWork.Complete();
                 }
@@ -90,6 +92,21 @@ namespace PSV.Service
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
                 {
                     return unitOfWork.Feedbacks.GetPage(model);
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public PageResponse<Feedback> GetPublic(PageModel model)
+        {
+            try
+            {
+                using (var unitOfWork = new UnitOfWork(new BackendContext()))
+                {
+                    return unitOfWork.Feedbacks.GetPublic(model);
                 }
             }
             catch (Exception e)

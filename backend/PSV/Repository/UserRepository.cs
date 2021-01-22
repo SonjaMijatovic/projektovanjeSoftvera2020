@@ -26,7 +26,7 @@ namespace PSV.Repository
 
         public override PageResponse<User> GetPage(PageModel model)
         {
-            var query = BackendContext.Users.Where(x => (x.Deleted == false && (x.FirstName.Contains(model.Search) || x.LastName.Contains(model.Search))));
+            var query = BackendContext.Users.Include("DoctorType").Where(x => (x.Deleted == false && (x.FirstName.Contains(model.Search) || x.LastName.Contains(model.Search))));
 
 
 

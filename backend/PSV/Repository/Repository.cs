@@ -61,6 +61,7 @@ namespace PSV.Repository
         public void Update(TEntity entity)
         {
             Context.Set<TEntity>().Attach(entity);
+            Context.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual IEnumerable<TEntity> GetAll()

@@ -23,7 +23,7 @@ namespace PSV.Controllers
         public PageResponse<Appointment> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
         {
 
-            return appointmentService.GetPage(new PageModel(page, perPage, search));
+            return appointmentService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()));
         }
 
         [Route("/api/appointments")]
