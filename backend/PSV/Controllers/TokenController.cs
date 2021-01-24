@@ -42,6 +42,11 @@ namespace PSV.Controllers
                 return BadRequest("Invalid credentials");
             }
 
+            if(user.Blocked)
+            {
+                return BadRequest("Invalid credentials");
+            }
+
             var claims = new[] {
                     new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

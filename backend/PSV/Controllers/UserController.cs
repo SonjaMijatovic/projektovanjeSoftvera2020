@@ -15,7 +15,7 @@ namespace PSV.Controllers
     public class UserController : DefaultController
     {
         [Authorize]
-        [Route("/api/user/all")]
+        [Route("/api/users/all")]
         [HttpGet]
         public PageResponse<User> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
         {
@@ -24,14 +24,14 @@ namespace PSV.Controllers
         }
 
         [Authorize]
-        [Route("/api/user/current")]
+        [Route("/api/users/current")]
         [HttpGet]
         public async Task<IActionResult> GetCurrent()
         {
             return Ok(GetCurrentUser());
         }
 
-        [Route("/api/user")]
+        [Route("/api/users")]
         [HttpPost]
         public async Task<IActionResult> Register(User userData)
         {
@@ -50,6 +50,24 @@ namespace PSV.Controllers
             user = userService.Add(userData);
 
             return Ok(user);
+        }
+
+        [Route("/api/users/block/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> Block(int id)
+        {
+            userService.Block(id);
+
+            return Ok();
+        }
+
+        [Route("/api/users/unblock/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> Unblock(int id)
+        {
+            userService.Unlock(id);
+
+            return Ok();
         }
     }
 }

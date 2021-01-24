@@ -10,6 +10,7 @@ namespace PSV.Model
         private int page = 0;
         private int perPage = 30;
         private string search = string.Empty;
+        private User user;
 
         public PageModel()
         {
@@ -18,8 +19,21 @@ namespace PSV.Model
         public PageModel(int page, int perPage, string search)
         {
             this.page = page;
-            this.perPage = perPage;
+            this.perPage = perPage > 0 ? perPage : 30;
             this.search = search == null ? string.Empty : search;
+        }
+
+        public PageModel(int page, int perPage, string search, User user)
+        {
+            this.page = page;
+            this.perPage = perPage > 0 ? perPage : 30;
+            this.search = search == null ? string.Empty : search;
+            this.user = user;
+        }
+
+        public User User { 
+            get { return user; }
+            set { user = value; }
         }
 
         public int Page

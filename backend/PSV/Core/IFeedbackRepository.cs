@@ -8,5 +8,6 @@ namespace PSV.Core
 {
     public interface IFeedbackRepository : IRepository<Feedback>
     {
+        PageResponse<Feedback> GetPublic(PageModel model);
     }
 }

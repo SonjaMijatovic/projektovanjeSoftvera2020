@@ -95,6 +95,7 @@ class AppointmentList extends TablePage {
             type: this.state.data.type ? this.state.data.type.value : '',
             from: this.state.data.from ? new Date(this.state.data.from).getTime() : 0,
             to: this.state.data.from ? new Date(this.state.data.to).getTime() : 0
+
         }).then(response => {
 
             if(!response.ok) {

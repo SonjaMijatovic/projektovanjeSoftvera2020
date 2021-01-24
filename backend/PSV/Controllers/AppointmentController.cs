@@ -18,23 +18,36 @@ namespace PSV.Controllers
         private AppointmentService appointmentService = new AppointmentService();
 
         [Authorize]
-        [Route("/api/appointment/all")]
+        [Route("/api/appointments/all")]
         [HttpGet]
-        public PageResponse<Appointment> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
+        public PageResponse<Appointment> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search,
+            [FromQuery(Name = "from")] long from, [FromQuery(Name = "to")] long to, [FromQuery(Name = "doctor")] int doctorId, [FromQuery(Name = "type")] string type)
         {
-
-            return appointmentService.GetPage(new PageModel(page, perPage, search));
+             
+            return appointmentService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()), from, to, doctorId, type);
         }
 
-
-        [Route("/api/appointment")]
+        [Route("/api/appointments")]
         [HttpPost]
-        public async Task<IActionResult> Register(Appointment appointmentData)
+        public async Task<IActionResult> Add(Appointment appointment)
         {
-            Appointment appointment = appointmentService.Add(appointmentData);
+            return Ok(appointmentService.Add(appointment));
+        }
 
-            return Ok(appointment);
+        [Route("/api/appointments/reserve/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> Reserve(int id)
+        {
+            appointmentService.Reserve(id, GetCurrentUser());
+            return Ok();
+        }
+
+        [Route("/api/appointments/cancel/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> Cacnel(int id)
+        {
+            appointmentService.Cancel(id);
+            return Ok();
         }
     }
-}
 }

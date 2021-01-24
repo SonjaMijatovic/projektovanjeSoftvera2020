@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\PSV\\PSV\\PSV.csproj": {}
+    "E:\\projektovanjeSoftvera2020\\backend\\PSV\\PSV.csproj": {}
   },
   "projects": {
-    "E:\\PSV\\PSV\\PSV.csproj": {
+    "E:\\projektovanjeSoftvera2020\\backend\\PSV\\PSV.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\PSV\\PSV\\PSV.csproj",
+        "projectUniqueName": "E:\\projektovanjeSoftvera2020\\backend\\PSV\\PSV.csproj",
         "projectName": "PSV",
-        "projectPath": "E:\\PSV\\PSV\\PSV.csproj",
+        "projectPath": "E:\\projektovanjeSoftvera2020\\backend\\PSV\\PSV.csproj",
         "packagesPath": "C:\\Users\\testx\\.nuget\\packages\\",
-        "outputPath": "E:\\PSV\\PSV\\obj\\",
+        "outputPath": "E:\\projektovanjeSoftvera2020\\backend\\PSV\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -44,6 +44,24 @@
             "EntityFramework": {
               "target": "Package",
               "version": "[6.4.4, )"
+            },
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.14.0, )"
+            },
+            "Google.ProtocolBuffers": {
+              "target": "Package",
+              "version": "[2.4.1.555, )"
+            },
+            "Grpc.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.35.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.11, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
