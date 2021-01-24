@@ -29,9 +29,10 @@ import {
     TableHead, TablePagination,
     TableRow, TextField
 } from "@material-ui/core";
-import {dateToString} from "../util/DateUtil";
+import {dateTimeToString} from "../util/DateUtil";
 import PageState from "../constants/PageState";
 import DrawerWrapper from "./DrawerWrapper";
+import moment from "moment";
 
 class TablePage extends Page {
 
@@ -250,7 +251,7 @@ class TablePage extends Page {
                                 <ListItemText inset primary={ strings.table.edit }/>
                             </MenuItem>
                         }
-                        
+
                         {
                             !item[this.deletedField] && this.state.showDelete &&
                             <MenuItem onClick={ () => this.handleMenuDelete(item) }>
@@ -377,7 +378,8 @@ class TablePage extends Page {
     }
 
     renderColumnDate(value) {
-        return dateToString(value);
+        value = moment.utc(value).local();
+        return dateTimeToString(value);
     }
 
     renderTable(data) {

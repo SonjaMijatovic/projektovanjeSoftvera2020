@@ -12,24 +12,24 @@ public class Database {
     private Recepies recepies;
 
     public Database() {
-//        recepies = new Recepies();
-//
-//        Medicine med1 = new Medicine("Med 1");
-//        Medicine med2 = new Medicine("Med 2");
-//
-//        Patient pt1 = new Patient(1, "firstName", "lastName");
-//
-//        Recepie recepie = new Recepie(pt1);
-//
-//        RecepieItem item1 = new RecepieItem(med1, 5);
-//        RecepieItem item2 = new RecepieItem(med2, 6);
-//
-//        recepie.getItems().add(item1);
-//        recepie.getItems().add(item2);
-//
-//        recepies.getRecepies().add(recepie);
-//
-//        save();
+        recepies = new Recepies();
+
+        Medicine med1 = new Medicine("Med 1");
+        Medicine med2 = new Medicine("Med 2");
+
+        Patient pt1 = new Patient(1, "firstName", "lastName");
+
+        Recepie recepie = new Recepie(pt1);
+
+        RecepieItem item1 = new RecepieItem(med1, 5);
+        RecepieItem item2 = new RecepieItem(med2, 6);
+
+        recepie.getItems().add(item1);
+        recepie.getItems().add(item2);
+
+        recepies.getRecepies().add(recepie);
+
+        save();
 
         load();
     }

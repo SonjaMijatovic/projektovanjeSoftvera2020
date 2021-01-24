@@ -25,7 +25,7 @@ namespace PSV.Service
 
                     feedback.Visible = true;
                     unitOfWork.Context.Feedbacks.Attach(feedback);
-                    unitOfWork.Context.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Context.Entry(feedback).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }
@@ -48,7 +48,7 @@ namespace PSV.Service
 
                     feedback.Visible = false;
                     unitOfWork.Context.Feedbacks.Attach(feedback);
-                    unitOfWork.Context.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Context.Entry(feedback).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }

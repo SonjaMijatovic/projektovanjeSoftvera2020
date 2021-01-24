@@ -62,7 +62,7 @@ class Navigation extends Component {
     }
 
     render() {
-        
+
         return (
             <Drawer variant="permanent" id='navigation'>
 
@@ -124,20 +124,20 @@ class Navigation extends Component {
 
                                     </ListItem>
                                 </Link>
+                                <Link to={'/feedbacks'} className={ this.isCurrentPath('/feedbacks') ? 'navigation-link active' : 'navigation-link'} >
+                                    <ListItem className='navigation-item'>
+
+                                        <ListItemIcon className='navigation-icon'>
+                                            <SendIcon/>
+                                        </ListItemIcon>
+
+                                        <ListItemText inset primary='Feedbacks' className='navigation-text'/>
+
+                                    </ListItem>
+                                </Link>
                                 </React.Fragment>
                         }
                         <React.Fragment>
-                            <Link to={'/feedbacks'} className={ this.isCurrentPath('/feedbacks') ? 'navigation-link active' : 'navigation-link'} >
-                                <ListItem className='navigation-item'>
-
-                                    <ListItemIcon className='navigation-icon'>
-                                        <SendIcon/>
-                                    </ListItemIcon>
-
-                                    <ListItemText inset primary='Feedbacks' className='navigation-text'/>
-
-                                </ListItem>
-                            </Link>
                             <Link to={'/appointments'} className={ this.isCurrentPath('/appointments') ? 'navigation-link active' : 'navigation-link'} >
                                 <ListItem className='navigation-item'>
 
@@ -165,9 +165,9 @@ class Navigation extends Component {
                                 </Link>
                             }
 
-                            
+
                         </React.Fragment>
-                        
+
                     </List>
                 </div>
 

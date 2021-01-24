@@ -1,13 +1,24 @@
 ﻿
 
 
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace PSV.Model
 {
     public class BackendContext : DbContext
     {
-        public BackendContext() : base("Server=DESKTOP-QT3N234\\SQLEXPRESS;Database=PSV;Trusted_Connection=True;")
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (optionsBuilder.IsConfigured)
+            {
+                return;
+            }
+
+            optionsBuilder.UseSqlServer("Server=localhost;Database=PSV1;User Id=sa;Password=reallyStrongPwd123");
+        }
+
+        public BackendContext()
         {
 
         }

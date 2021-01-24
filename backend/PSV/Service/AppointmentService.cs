@@ -1,4 +1,5 @@
-﻿using PSV.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using PSV.Model;
 using PSV.Repository;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace PSV.Service
                     appointment.Patient = user;
                     appointment.IsFree = false;
                     unitOfWork.Context.Appointments.Attach(appointment);
-                    unitOfWork.Context.Entry(appointment).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Context.Entry(appointment).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }
@@ -93,7 +94,7 @@ namespace PSV.Service
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
                 {
-                    Appointment appointment = unitOfWork.Appointments.Get(id);
+                    Appointment appointment = unitOfWork.Context.Appointments.Include("Patient").Where(x => x.Id == id).SingleOrDefault();
 
                     if (appointment == null)
                     {
@@ -103,7 +104,7 @@ namespace PSV.Service
                     appointment.Patient = null;
                     appointment.IsFree = true;
                     unitOfWork.Context.Appointments.Attach(appointment);
-                    unitOfWork.Context.Entry(appointment).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Context.Entry(appointment).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }

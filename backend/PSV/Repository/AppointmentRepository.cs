@@ -1,4 +1,5 @@
-﻿using PSV.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using PSV.Core;
 using PSV.Model;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace PSV.Repository
             var query = BackendContext.Appointments.Include("Patient").Include("Doctor").Where(x => (x.Deleted == false ));
 
             if (model.User != null && model.User.UserType == "PATIENT") {
-                query = query.Where(x => x.Patient.Id == model.User.Id || x.IsFree);
+                query = query.Where(x => x.Patient.Email == model.User.Email || x.IsFree);
             }
 
             if (model.User != null && model.User.UserType == "DOCTOR")

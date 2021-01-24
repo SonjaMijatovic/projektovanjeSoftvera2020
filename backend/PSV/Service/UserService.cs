@@ -22,7 +22,7 @@ namespace PSV.Service
 
                     user.Blocked = true;
                     unitOfWork.Context.Users.Attach(user);
-                    unitOfWork.Context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }
@@ -45,7 +45,7 @@ namespace PSV.Service
 
                     user.Blocked = false;
                     unitOfWork.Context.Users.Attach(user);
-                    unitOfWork.Context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    unitOfWork.Context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }

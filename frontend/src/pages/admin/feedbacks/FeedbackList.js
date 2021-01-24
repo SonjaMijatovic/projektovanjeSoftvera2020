@@ -25,6 +25,9 @@ class FeedbackList extends TablePage {
 
     constructor(props) {
         super(props);
+        this.state.page = 2;
+        this.state.perPage = 30;
+        this.state.total = 0;
     }
 
     fetchData() {
@@ -52,6 +55,7 @@ class FeedbackList extends TablePage {
     }
 
     componentDidMount() {
+        this.loadParams();
         this.fetchData();
     }
 

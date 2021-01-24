@@ -6376,34 +6376,29 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\testx\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/smijatovic/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\projektovanjeSoftvera2020\\backend\\PSV\\PSV.csproj",
+      "projectUniqueName": "/Users/smijatovic/Documents/Projects/projektovanjeSoftvera2020/backend/PSV/PSV.csproj",
       "projectName": "PSV",
-      "projectPath": "E:\\projektovanjeSoftvera2020\\backend\\PSV\\PSV.csproj",
-      "packagesPath": "C:\\Users\\testx\\.nuget\\packages\\",
-      "outputPath": "E:\\projektovanjeSoftvera2020\\backend\\PSV\\obj\\",
+      "projectPath": "/Users/smijatovic/Documents/Projects/projektovanjeSoftvera2020/backend/PSV/PSV.csproj",
+      "packagesPath": "/Users/smijatovic/.nuget/packages/",
+      "outputPath": "/Users/smijatovic/Documents/Projects/projektovanjeSoftvera2020/backend/PSV/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\testx\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/smijatovic/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -6415,6 +6410,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "EntityFramework": {
             "target": "Package",
@@ -6471,7 +6467,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
       }
     }
   },

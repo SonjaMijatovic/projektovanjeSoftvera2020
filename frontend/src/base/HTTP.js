@@ -35,7 +35,7 @@ const Axios = (function () {
 Axios.getInstance().interceptors.response.use(response => {
 
     response.ok = response.status >= 200 && response.status < 300;
-
+    console.log('response status ' + response.status);
     return response;
 }, async error => {
 
@@ -70,7 +70,7 @@ export async function request(url, data = [], method = HttpMethod.GET, options =
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Authorization',
         'Accept': 'application/json',
-        
+
     };
 
     return await connect(url, data, method, headers);

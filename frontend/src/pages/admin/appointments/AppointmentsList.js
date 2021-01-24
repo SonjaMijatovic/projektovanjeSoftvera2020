@@ -29,7 +29,7 @@ import DatePickerControl from '../../../components/controls/DatePickerControl';
 class AppointmentList extends TablePage {
 
     tableDescription = [
-        { key: 'date', label: "Date" },
+        { key: 'date', label: "Date", transform: 'renderColumnDate' },
         { key: 'doctor', label: "Doctor", transform: 'renderColumnUser' },
         { key: 'patient', label: "Patient", transform: 'renderColumnUser' },
         { key: 'isFree', label: "Is free", transform: 'renderColumnDeleted' }
@@ -45,7 +45,7 @@ class AppointmentList extends TablePage {
 
     renderColumnUser(item) {
 
-        if(!item) 
+        if(!item)
         {
             return '';
         }
@@ -83,7 +83,7 @@ class AppointmentList extends TablePage {
 
             this.setState({
                 doctors: result,
-                
+
             });
         });
 
@@ -104,7 +104,7 @@ class AppointmentList extends TablePage {
             });
         });
 
-        
+
     }
 
     componentDidMount() {
@@ -176,27 +176,9 @@ class AppointmentList extends TablePage {
                         open={ Boolean(this.state.anchorEl) }
                         onClose={ () => this.handleMenuClose() }
                     >
-                        {
-                            !item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleMenuDelete(item) }>
-                                <ListItemIcon>
-                                    <DeleteIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.delete }/>
-                            </MenuItem>
-                        }
-                        {
-                            item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleRestore(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.undo }/>
-                            </MenuItem>
-                        }
 
                         {
-                            !item.isFree &&
+                            !item.isFree && this.props.auth.user.userType != 'DOCTOR' &&
                             <MenuItem onClick={ () => this.handleUnblock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
@@ -206,7 +188,7 @@ class AppointmentList extends TablePage {
                         }
 
 {
-                            item.isFree &&
+                            item.isFree && this.props.auth.user.userType != 'DOCTOR' &&
                             <MenuItem onClick={ () => this.handleBlock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
@@ -234,11 +216,11 @@ class AppointmentList extends TablePage {
                     <div className='filter-controls' style={{ display: 'flex',
                 flexDirection: 'flex-row', alignItems: 'center' }}>
 
-                    
-                            
+
+
                             <div style={{ width: '250px' }}>
                                 <DatePickerControl
-                                    date={this.state.data.date}
+                                    date={this.state.data.from}
                                     name={'from'}
                                     placeholder={ "From" }
                                     onChange={this.changeData}
@@ -247,13 +229,13 @@ class AppointmentList extends TablePage {
 
                             <div style={{ width: '250px' }}>
                                 <DatePickerControl
-                                    date={this.state.data.date}
+                                    date={this.state.data.to}
                                     name={'to'}
                                     placeholder={ "To" }
                                     onChange={this.changeData}
                                 />
                             </div>
-                            
+
                             <div style={{ width: '150px' }}>
                                 <SelectControl
                                     options={ this.state.doctors }
@@ -282,7 +264,7 @@ class AppointmentList extends TablePage {
                             </div>
 
                             <Button onClick={ () => this.fetchData() } >Find</Button>
-                            
+
 
                         {
                             this.state.showAdd &&

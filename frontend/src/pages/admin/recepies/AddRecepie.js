@@ -14,6 +14,7 @@ import {withSnackbar} from "notistack";
 import AppointmentForm from '../../../components/forms/admin/appointment/AppointmentForm';
 import { addAppointment } from '../../../services/AppointmentService';
 import RecepieForm from '../../../components/forms/admin/recepies/RecepieForm';
+import { addRecepies } from '../../../services/RecepieService';
 
 class AddRecepie extends FormComponent {
 
