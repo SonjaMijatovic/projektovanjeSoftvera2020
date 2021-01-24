@@ -1,6 +1,6 @@
 import React from 'react'
 import TablePage from "../../../common/TablePage";
-import {deleteUser, getUsers, restoreUser} from "../../../services/admin/UserAdminService";
+import {deleteUser, getUsers, blockUser, unblockUser} from "../../../services/admin/UserAdminService";
 import {bindActionCreators} from "redux";
 import * as Actions from "../../../actions/Actions";
 import {withRouter} from "react-router-dom";
@@ -12,7 +12,7 @@ import {ListItemIcon, ListItemText, Menu, MenuItem, TableCell} from "@material-u
 import IconButton from "@material-ui/core/IconButton";
 import MoreVert from '@material-ui/icons/MoreVert';
 import UndoIcon from '@material-ui/icons/Undo';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { getDoctorTypes } from '../../../services/DoctorTypeService';
 
 
 class UserList extends TablePage {
@@ -20,11 +20,24 @@ class UserList extends TablePage {
     tableDescription = [
         { key: 'email', label: strings.userList.email },
         { key: 'firstName', label: strings.userList.firstName },
-        { key: 'lastName', label: strings.userList.lastName }
+        { key: 'lastName', label: strings.userList.lastName },
+        { key: 'userType', label: "User type" },
+        { key: 'doctorType', label: "Doctor Type", transform: 'renderDoctorType' },
+        { key: 'blocked', label: "Blocked", transform: 'renderColumnDeleted' }
     ];
+
+    renderDoctorType(item) {
+        if(!item) {
+            return '';
+        }
+
+        return item.name
+    }
 
     constructor(props) {
         super(props);
+
+        this.state.doctoreTypes = [];
     }
 
     fetchData() {
@@ -49,6 +62,22 @@ class UserList extends TablePage {
                 lockTable: false
             });
         });
+
+        getDoctorTypes({
+            page: this.state.searchData.page,
+            perPage: this.state.searchData.perPage,
+            search: this.state.searchData.search.toLowerCase()
+        }).then(response => {
+
+            if(!response.ok) {
+                return;
+            }
+
+            this.setState({
+                doctoreTypes: response.data.entities ? response.data.entities : [],
+                
+            });
+        });
     }
 
     componentDidMount() {
@@ -60,7 +89,7 @@ class UserList extends TablePage {
     }
 
     renderAddContent() {
-        return <AddUser onCancel={ this.onCancel } onFinish={ this.onFinish }/>
+        return <AddUser doctoreTypes={ this.state.doctoreTypes } onCancel={ this.onCancel } onFinish={ this.onFinish }/>
     }
 
     delete(item) {
@@ -87,26 +116,15 @@ class UserList extends TablePage {
         });
     }
 
-    restore(item) {
+    handleUnblock(item) {
+        unblockUser(item.id).then(response => {
+            this.fetchData();
+        })
+    }
 
-        this.setState({
-            lockTable: true
-        });
-
-        restoreUser(item.id).then(response => {
-
-            if(response && !response.ok) {
-                this.onFinish(null);
-                return;
-            }
-
-            this.props.enqueueSnackbar(strings.userList.userRestored, { variant: 'success' });
-
-            this.onFinish(item);
-
-            this.setState({
-                lockTable: false
-            });
+    handleBlock(item) {
+        blockUser(item.id).then(response => {
+            this.fetchData();
         });
     }
 
@@ -131,22 +149,24 @@ class UserList extends TablePage {
                         open={ Boolean(this.state.anchorEl) }
                         onClose={ () => this.handleMenuClose() }
                     >
+
                         {
-                            !item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleMenuDelete(item) }>
-                                <ListItemIcon>
-                                    <DeleteIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.delete }/>
-                            </MenuItem>
-                        }
-                        {
-                            item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleRestore(item) }>
+                            item.blocked &&
+                            <MenuItem onClick={ () => this.handleUnblock(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.undo }/>
+                                <ListItemText inset primary="Unblock"/>
+                            </MenuItem>
+                        }
+
+{
+                            !item.blocked &&
+                            <MenuItem onClick={ () => this.handleBlock(item) }>
+                                <ListItemIcon>
+                                    <UndoIcon/>
+                                </ListItemIcon>
+                                <ListItemText inset primary="Block"/>
                             </MenuItem>
                         }
 

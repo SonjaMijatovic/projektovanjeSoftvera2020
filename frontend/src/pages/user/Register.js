@@ -9,11 +9,9 @@ import Page from "../../common/Page";
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import LoginForm from "../../components/forms/user/LoginForm";
 import Validators from "../../constants/ValidatorTypes";
-import {login} from "../../base/OAuth";
-import UserForm from '../../components/forms/admin/user/UserForm';
 import { register } from '../../services/UserService';
+import UserRegisterForm from '../../components/forms/admin/user/UserRegisterForm';
 
 
 class Register extends Page {
@@ -80,7 +78,7 @@ class Register extends Page {
 
                         <h1>{ strings.login.register }</h1>
 
-                        <UserForm onSubmit={ () => this.register() } onChange={ this.changeData }
+                        <UserRegisterForm onSubmit={ () => this.register() } onChange={ this.changeData }
                                    keyPress={ this.keyPress }
                                    data={ this.state.data } errors={ this.state.errors }/>
                     </Paper>

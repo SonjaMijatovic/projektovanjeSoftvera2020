@@ -41,7 +41,16 @@ class AddUser extends FormComponent {
 
         this.showDrawerLoader();
 
-        addUser(this.state.data).then(response => {
+        let data = {
+            email: this.state.data.email,
+            firstName: this.state.data.firstName,
+            lastName: this.state.data.lastName,
+            password: this.state.data.password,
+            userType: this.state.data.userType ? this.state.data.userType.value : '',
+            doctorType:  this.state.data.doctorType ? { id: this.state.data.doctorType.id} : null
+        }
+
+        addUser(data).then(response => {
 
             if(!response.ok) {
                 this.props.onFinish(null);
@@ -49,7 +58,7 @@ class AddUser extends FormComponent {
                 return;
             }
 
-            this.props.enqueueSnackbar(strings.addUser.userAdded, { variant: 'error' });
+            this.props.enqueueSnackbar(strings.addUser.userAdded, { variant: 'success' });
             this.props.onFinish(response.data.user);
 
             this.hideDrawerLoader();
@@ -66,7 +75,7 @@ class AddUser extends FormComponent {
                 </div>
 
                 <Paper className='paper'>
-                    <UserForm onChange={ this.changeData } onSubmit={ this.submit }
+                    <UserForm doctoreTypes={ this.props.doctoreTypes } onChange={ this.changeData } onSubmit={ this.submit }
                                 data={ this.state.data } errors={ this.state.errors } onCancel={ this.props.onCancel }/>
                 </Paper>
 

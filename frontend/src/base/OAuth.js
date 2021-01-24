@@ -21,9 +21,11 @@ export async function login(username, password) {
                 return response;
             }
 
-            setTokenToLocalStorage(response.data, response.data);
+            console.log(response.data.value.auth);
 
-            return request('/api/user/current').then((response) => {
+            setTokenToLocalStorage(response.data.value.auth, response.data.value.auth);
+
+            return request('/api/users/current').then((response) => {
 
                 if(response.data) {
 

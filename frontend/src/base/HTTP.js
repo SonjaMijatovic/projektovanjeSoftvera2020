@@ -65,7 +65,15 @@ Axios.getInstance().interceptors.response.use(response => {
 
 export async function request(url, data = [], method = HttpMethod.GET, options = {}) {
 
-    return await connect(url, data, method, options);
+    let headers =  {
+        'Access-Control-Allow-Credentials':'true',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Authorization',
+        'Accept': 'application/json',
+        
+    };
+
+    return await connect(url, data, method, headers);
 }
 
 export async function requestFile(url, data = [], method = HttpMethod.GET) {

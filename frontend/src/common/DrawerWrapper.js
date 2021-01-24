@@ -15,13 +15,13 @@ class DrawerWrapper extends Component {
 
         return (
 
-            <Grid className='drawer-wrapper'>
+            <Grid className='drawer-wrapper' >
                 <div className='drawer-wrapper-header'>
                     <IconButton onClick={ () => this.props.onBack() }>
                         <ChevronRight/>
                     </IconButton>
                 </div>
-                <div className='drawer-wrapper-content'>
+                <div className='drawer-wrapper-content' style={ {width: '450px'}}>
                     { children }
                 </div>
             </Grid>

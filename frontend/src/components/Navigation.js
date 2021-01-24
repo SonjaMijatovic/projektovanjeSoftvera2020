@@ -58,7 +58,7 @@ class Navigation extends Component {
     }
 
     isAdmin() {
-        return this.props.auth.user && this.props.auth.user.admin;
+        return this.props.auth.user && this.props.auth.user.userType == 'ADMIN';
     }
 
     render() {
@@ -73,10 +73,21 @@ class Navigation extends Component {
                             <SendIcon/>
                         </div>
                         <div className='title'>
-                            <h2>Some Title</h2>
+                            <h2>PSV</h2>
                         </div>
                     </div>
                     <List component="nav">
+                        <Link to={'/'} className={ this.isCurrentPath('/') ? 'navigation-link active' : 'navigation-link'} >
+                            <ListItem className='navigation-item'>
+
+                                <ListItemIcon className='navigation-icon'>
+                                    <SendIcon/>
+                                </ListItemIcon>
+
+                                <ListItemText inset primary='Home' className='navigation-text'/>
+
+                            </ListItem>
+                        </Link>
                         {
                             this.isAdmin() &&
                             <React.Fragment>
@@ -91,67 +102,71 @@ class Navigation extends Component {
 
                                     </ListItem>
                                 </Link>
-                                <Link to={'/carCategories'} className={ this.isCurrentPath('/carCategories') ? 'navigation-link active' : 'navigation-link'} >
+                                <Link to={'/doctor-types'} className={ this.isCurrentPath('/doctor-types') ? 'navigation-link active' : 'navigation-link'} >
                                     <ListItem className='navigation-item'>
 
                                         <ListItemIcon className='navigation-icon'>
                                             <SendIcon/>
                                         </ListItemIcon>
 
-                                        <ListItemText inset primary='Car categories' className='navigation-text'/>
+                                        <ListItemText inset primary='Doctor types' className='navigation-text'/>
 
                                     </ListItem>
                                 </Link>
-                                <Link to={'/carModels'} className={ this.isCurrentPath('/carModels') ? 'navigation-link active' : 'navigation-link'} >
+                                <Link to={'/medicines'} className={ this.isCurrentPath('/medicines') ? 'navigation-link active' : 'navigation-link'} >
                                     <ListItem className='navigation-item'>
 
                                         <ListItemIcon className='navigation-icon'>
                                             <SendIcon/>
                                         </ListItemIcon>
 
-                                        <ListItemText inset primary='Car models' className='navigation-text'/>
+                                        <ListItemText inset primary='Medicines' className='navigation-text'/>
 
                                     </ListItem>
                                 </Link>
-                                
-                            </React.Fragment>
+                                </React.Fragment>
                         }
+                        <React.Fragment>
+                            <Link to={'/feedbacks'} className={ this.isCurrentPath('/feedbacks') ? 'navigation-link active' : 'navigation-link'} >
+                                <ListItem className='navigation-item'>
 
-                        <Link to={'/cars'} className={ this.isCurrentPath('/cars') ? 'navigation-link active' : 'navigation-link'} >
-                            <ListItem className='navigation-item'>
+                                    <ListItemIcon className='navigation-icon'>
+                                        <SendIcon/>
+                                    </ListItemIcon>
 
-                                <ListItemIcon className='navigation-icon'>
-                                    <SendIcon/>
-                                </ListItemIcon>
+                                    <ListItemText inset primary='Feedbacks' className='navigation-text'/>
 
-                                <ListItemText inset primary='Cars' className='navigation-text'/>
+                                </ListItem>
+                            </Link>
+                            <Link to={'/appointments'} className={ this.isCurrentPath('/appointments') ? 'navigation-link active' : 'navigation-link'} >
+                                <ListItem className='navigation-item'>
 
-                            </ListItem>
-                        </Link>
+                                    <ListItemIcon className='navigation-icon'>
+                                        <SendIcon/>
+                                    </ListItemIcon>
 
-                        <Link to={'/parts'} className={ this.isCurrentPath('/parts') ? 'navigation-link active' : 'navigation-link'} >
-                            <ListItem className='navigation-item'>
+                                    <ListItemText inset primary='Appointments' className='navigation-text'/>
 
-                                <ListItemIcon className='navigation-icon'>
-                                    <SendIcon/>
-                                </ListItemIcon>
+                                </ListItem>
+                            </Link>
 
-                                <ListItemText inset primary='Parts' className='navigation-text'/>
+                            {
+                                this.props.auth.user && this.props.auth.user.userType == "DOCTOR" &&
+                                <Link to={'/recepies'} className={ this.isCurrentPath('/recepies') ? 'navigation-link active' : 'navigation-link'} >
+                                    <ListItem className='navigation-item'>
 
-                            </ListItem>
-                        </Link>
+                                        <ListItemIcon className='navigation-icon'>
+                                            <SendIcon/>
+                                        </ListItemIcon>
 
-                        <Link to={'/orders'} className={ this.isCurrentPath('/orders') ? 'navigation-link active' : 'navigation-link'} >
-                            <ListItem className='navigation-item'>
+                                        <ListItemText inset primary='Recepies' className='navigation-text'/>
 
-                                <ListItemIcon className='navigation-icon'>
-                                    <SendIcon/>
-                                </ListItemIcon>
+                                    </ListItem>
+                                </Link>
+                            }
 
-                                <ListItemText inset primary='Orders' className='navigation-text'/>
-
-                            </ListItem>
-                        </Link>
+                            
+                        </React.Fragment>
                         
                     </List>
                 </div>

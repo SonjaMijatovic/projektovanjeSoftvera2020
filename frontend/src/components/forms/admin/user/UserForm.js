@@ -2,13 +2,15 @@ import React from 'react';
 import strings from "../../../../localization";
 import {getError, hasError} from "../../../../functions/Validation";
 import {Button, TextField} from "@material-ui/core";
-
+import SelectControl from '../../../controls/SelectControl';
+import {getUserTypesList} from '../../../../constants/UserType';
 const UserForm = ({
                       onSubmit,
                       onCancel,
                       onChange,
                       errors,
-                      data
+                      data,
+                      doctoreTypes
                   }) => (
 
     <form id='user-form'>
@@ -56,6 +58,30 @@ const UserForm = ({
             margin="normal"
             value={ data.lastName }
         />
+        <SelectControl
+            hasError={ hasError(errors, 'userType') }
+            error={ getError(errors, 'userType') }
+            options={ getUserTypesList() }
+            selected={ data.userType }
+            onChange={ onChange }
+            label={ 'User type' }
+            name={ 'userType' }
+            nameKey={ 'name' }
+            valueKey={ 'value' }
+        />
+
+        <SelectControl
+            hasError={ hasError(errors, 'doctorType') }
+            error={ getError(errors, 'doctorType') }
+            options={ doctoreTypes }
+            selected={ data.doctorType }
+            onChange={ onChange }
+            label={ 'Dcotore type' }
+            name={ 'doctorType' }
+            nameKey={ 'name' }
+            valueKey={ 'id' }
+        />
+
         <div className='submit-container'>
             <Button variant="contained" color="primary" onClick={ onSubmit }>
                 { strings.userForm.ok }

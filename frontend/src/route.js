@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './pages/Home';
+import Home from './pages/admin/home/Home';
 import Error from "./pages/Error";
 import Forbidden from "./pages/Forbidden";
 import NotFound from "./pages/NotFound";
@@ -10,11 +10,11 @@ import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
 import Lock from "./pages/user/Lock";
 import UserList from "./pages/admin/users/UserList";
-import CarCategoryList from './pages/admin/carCategories/CarCategoryList';
-import CarModelList from './pages/admin/carModels/CarModelList';
-import CarList from './pages/admin/cars/CarList';
-import PartList from './pages/admin/parts/PartList';
-import OrderList from './pages/admin/orders/OrderList';
+import DoctorTypeList from './pages/admin/doctoreType/DoctorTypeList';
+import MedicineList from './pages/admin/medicines/MedicineList';
+import FeedbackList from './pages/admin/feedbacks/FeedbackList';
+import AppointmentsList from './pages/admin/appointments/AppointmentsList';
+import RecepieList from './pages/admin/recepies/RecepieList';
 
 let ROUTES = {
     Home: {
@@ -54,35 +54,34 @@ let ROUTES = {
     },
     UserList: {
         path: '/users',
-        component: <UserList showFilter={ false }/>,
+        component: <UserList/>,
         auth: true
     },
-    CarCategoryList: {
-        path: '/carCategories',
-        component: <CarCategoryList showFilter={ false }/>,
+    DoctorTypesList: {
+        path: '/doctor-types',
+        component: <DoctorTypeList/>,
         auth: true
     },
-    CarModelList: {
-        path: '/carModels',
-        component: <CarModelList showFilter={ false }/>,
+    Medicines: {
+        path: '/medicines',
+        component: <MedicineList/>,
         auth: true
     },
-    CarList: {
-        path: '/cars',
-        component: <CarList showFilter={ false }/>,
+    Feedbacks: {
+        path: '/feedbacks',
+        component: <FeedbackList/>,
         auth: true
     },
-    PartList: {
-        path: '/parts',
-        component: <PartList showFilter={ false }/>,
+    Appointments: {
+        path: '/appointments',
+        component: <AppointmentsList/>,
         auth: true
     },
-    OrderList: {
-        path: '/orders',
-        component: <OrderList showFilter={ false }/>,
+    RecepieList: {
+        path: '/recepies',
+        component: <RecepieList/>,
         auth: true
     }
-    
 };
 
 export default ROUTES;

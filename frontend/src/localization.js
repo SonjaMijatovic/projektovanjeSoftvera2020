@@ -4,6 +4,11 @@ let strings = new LocalizedStrings({
 
     en: {
 
+        doctorTypeList: {
+            name: 'Name',
+            doctorTypes: 'Doctor types'
+        },
+
         orderList: {
             description: 'Description',
             price: 'Price',

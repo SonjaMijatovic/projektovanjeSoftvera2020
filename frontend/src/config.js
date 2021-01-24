@@ -1,6 +1,6 @@
 let CONFIG = {
-    baseUrlAPI: 'https://localhost:44333/api',
-    baseUrl: 'https://localhost:44333',
+    baseUrlAPI: 'https://0ef50f045a52.ngrok.io/api',
+    baseUrl: 'https://0ef50f045a52.ngrok.io',
     tokenKey: '1stKgorpnoj8mFIsI3sg',
     refreshTokenKey: 'ZJmD63XQFsK6cHUWwN5T',
     clientId: 'CLIENT_ID',
