@@ -8,5 +8,7 @@ namespace PSV.Core
 {
     public interface IAppointmentRepository : IRepository<Appointment>
     {
+        PageResponse<Appointment> GetPage(PageModel model, long from, long to, int doctorId, string type);
+        
     }
 }

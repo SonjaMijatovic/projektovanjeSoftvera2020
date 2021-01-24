@@ -47,13 +47,13 @@ namespace PSV.Service
             return appointment;
         }
 
-        public PageResponse<Appointment> GetPage(PageModel model)
+        public PageResponse<Appointment> GetPage(PageModel model, long from, long to, int doctorId, string type)
         {
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
                 {
-                    return unitOfWork.Appointments.GetPage(model);
+                    return unitOfWork.Appointments.GetPage(model, from, to, doctorId, type);
                 }
             }
             catch (Exception e)
