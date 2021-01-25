@@ -31,7 +31,6 @@ namespace PSV.Service
 
         public void Unlock(int id)
         {
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
@@ -58,7 +57,6 @@ namespace PSV.Service
             {
                 return null;
             }
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))

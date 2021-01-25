@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
 using PSV.Service;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PSV.Controllers
 {
@@ -20,10 +15,11 @@ namespace PSV.Controllers
         [Authorize]
         [Route("/api/appointments/all")]
         [HttpGet]
-        public PageResponse<Appointment> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
+        public PageResponse<Appointment> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search,
+            [FromQuery(Name = "from")] long from, [FromQuery(Name = "to")] long to, [FromQuery(Name = "doctor")] int doctorId, [FromQuery(Name = "type")] string type)
         {
 
-            return appointmentService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()));
+            return appointmentService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()), from, to, doctorId, type);
         }
 
         [Route("/api/appointments")]

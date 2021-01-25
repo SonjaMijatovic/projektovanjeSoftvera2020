@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Grpc.Net.Client;
 
 namespace PSV.Service
 {
-    public class MedicineService
+    public class MedsService
     {
         public Medicine Add(Medicine medicine)
         {
@@ -51,20 +52,27 @@ namespace PSV.Service
             }
         }
 
-        public void AddMore(int id, double amount) {
+        public async void AddMore(int id, double amount) {
             try
             {
+                AppContext.SetSwitch(
+                    "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+                using var channel = GrpcChannel.ForAddress("http://localhost:8081");
+                var client =  new MedicineService.MedicineServiceClient(channel);
+                var reply = await client.getMedicineAsync(new MedicineRequest { MedicineId = id.ToString() });
+
+                if (reply.Result != "OK")
+                {
+                    return;
+                }
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
                 {
                     Medicine medicine = unitOfWork.Medicines.Get(id);
-
                     if(medicine == null)
                     {
                         return;
                     }
-
                     medicine.Amount += amount;
-
                     unitOfWork.Medicines.Update(medicine);
                     unitOfWork.Complete();
                 }

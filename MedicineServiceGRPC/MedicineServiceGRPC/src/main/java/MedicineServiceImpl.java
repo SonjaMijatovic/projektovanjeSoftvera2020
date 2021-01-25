@@ -11,6 +11,8 @@ public class MedicineServiceImpl extends MedicineServiceGrpc.MedicineServiceImpl
     @Override
     public void getMedicine(MedicineRequest request,
                             io.grpc.stub.StreamObserver<MedicineResponse> responseObserver) {
+    	
+    	System.out.println("Medicine id is: " + request.getMedicineId());
 
         Random random = new Random();
 
@@ -21,6 +23,9 @@ public class MedicineServiceImpl extends MedicineServiceGrpc.MedicineServiceImpl
         if(number > 500) {
             response = "ERROR";
         }
+        
+    	System.out.println("Response is: " + response);
+
 
         MedicineResponse res = MedicineResponse.newBuilder().setResult(response).build();
 

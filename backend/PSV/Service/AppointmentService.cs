@@ -2,9 +2,7 @@
 using PSV.Model;
 using PSV.Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PSV.Service
 {
@@ -16,7 +14,6 @@ namespace PSV.Service
             {
                 return null;
             }
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
@@ -44,17 +41,16 @@ namespace PSV.Service
             {
                 return null;
             }
-
             return appointment;
         }
 
-        public PageResponse<Appointment> GetPage(PageModel model)
+        public PageResponse<Appointment> GetPage(PageModel model, long from, long to, int doctorId, string type)
         {
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
                 {
-                    return unitOfWork.Appointments.GetPage(model);
+                    return unitOfWork.Appointments.GetPage(model, from, to, doctorId, type);
                 }
             }
             catch (Exception e)
@@ -65,7 +61,6 @@ namespace PSV.Service
 
         public void Reserve(int id, User user)
         {
- 
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
@@ -76,11 +71,10 @@ namespace PSV.Service
                     {
                         return;
                     }
-
                     appointment.Patient = user;
                     appointment.IsFree = false;
                     unitOfWork.Context.Appointments.Attach(appointment);
-                    unitOfWork.Context.Entry(appointment).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    unitOfWork.Context.Entry(appointment).State = EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }
@@ -89,7 +83,6 @@ namespace PSV.Service
 
         public void Cancel(int id)
         {
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
@@ -100,18 +93,14 @@ namespace PSV.Service
                     {
                         return;
                     }
-
                     appointment.Patient = null;
                     appointment.IsFree = true;
                     unitOfWork.Context.Appointments.Attach(appointment);
-                    unitOfWork.Context.Entry(appointment).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    unitOfWork.Context.Entry(appointment).State = EntityState.Modified;
                     unitOfWork.Complete();
                 }
             }
             catch (Exception e) { }
         }
-
-
-
     }
 }

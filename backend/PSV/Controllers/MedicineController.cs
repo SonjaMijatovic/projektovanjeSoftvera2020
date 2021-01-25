@@ -2,18 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
 using PSV.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PSV.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class MedicineController : DefaultController
     {
-        private MedicineService mediciniService = new MedicineService();
+        private MedsService mediciniService = new MedsService();
 
         [Authorize]
         [Route("/api/medicines/all")]

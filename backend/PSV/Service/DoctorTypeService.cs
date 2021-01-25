@@ -1,10 +1,6 @@
-﻿using PSV.Controllers;
-using PSV.Model;
+﻿using PSV.Model;
 using PSV.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PSV.Service
 {

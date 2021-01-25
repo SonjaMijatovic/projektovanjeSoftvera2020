@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PSV.Model;
-using PSV.Service;
-
 
 namespace PSV.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class RecepieController : DefaultController
     {
@@ -39,7 +34,7 @@ namespace PSV.Controllers
         {
             try
             {
-                string url = "http://localhost:8080/recepies/";
+                string url = "http://localhost:8080/recepies/all";
                 using (HttpClient client = new HttpClient())
                 {
                     return await client.GetStringAsync(url);
@@ -51,22 +46,35 @@ namespace PSV.Controllers
         }
 
         [HttpPost]
-        [Route("/api/recepies")]
+        [Route("/api/recepies/")]
         public async Task<HttpResponseMessage> Add(Recepie recepie)
         {
             try
             {
-                string url = "http://localhost:8080/recepies";
+                var newRecepie = new
+                {
+                    id = -1,
+                    patient = new
+                    {
+                        firstName = recepie.Patient.FirstName,
+                        lastName = recepie.Patient.LastName,
+                    },
+                    items = new[] {
+                        new {
+                            medicine = new { name = recepie.Medicine.Name },
+                            count = recepie.Amount
+                        }}
+                };
+                string url = "http://localhost:8080/recepies/";
                 using (HttpClient client = new HttpClient())
                 {
-                    return await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(recepie)));
+                    return await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(newRecepie), UnicodeEncoding.UTF8, "application/json"));
                 }
             }
             catch (Exception e)
             {
 
             }
-
             return null;
         }
     }

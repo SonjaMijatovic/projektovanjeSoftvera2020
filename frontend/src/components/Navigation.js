@@ -113,17 +113,6 @@ class Navigation extends Component {
 
                                     </ListItem>
                                 </Link>
-                                <Link to={'/medicines'} className={ this.isCurrentPath('/medicines') ? 'navigation-link active' : 'navigation-link'} >
-                                    <ListItem className='navigation-item'>
-
-                                        <ListItemIcon className='navigation-icon'>
-                                            <SendIcon/>
-                                        </ListItemIcon>
-
-                                        <ListItemText inset primary='Medicines' className='navigation-text'/>
-
-                                    </ListItem>
-                                </Link>
                                 <Link to={'/feedbacks'} className={ this.isCurrentPath('/feedbacks') ? 'navigation-link active' : 'navigation-link'} >
                                     <ListItem className='navigation-item'>
 
@@ -151,7 +140,7 @@ class Navigation extends Component {
                             </Link>
 
                             {
-                                this.props.auth.user && this.props.auth.user.userType == "DOCTOR" &&
+                                this.props.auth.user && (this.props.auth.user.userType == "DOCTOR" || this.props.auth.user.userType == "PHARMACYST") &&
                                 <Link to={'/recepies'} className={ this.isCurrentPath('/recepies') ? 'navigation-link active' : 'navigation-link'} >
                                     <ListItem className='navigation-item'>
 
@@ -165,6 +154,20 @@ class Navigation extends Component {
                                 </Link>
                             }
 
+                            {
+                              this.props.auth.user && this.props.auth.user.userType == "DOCTOR" &&
+                              <Link to={'/medicines'} className={ this.isCurrentPath('/medicines') ? 'navigation-link active' : 'navigation-link'} >
+                                  <ListItem className='navigation-item'>
+
+                                      <ListItemIcon className='navigation-icon'>
+                                          <SendIcon/>
+                                      </ListItemIcon>
+
+                                      <ListItemText inset primary='Medicines' className='navigation-text'/>
+
+                                  </ListItem>
+                              </Link>
+                            }
 
                         </React.Fragment>
 

@@ -6,11 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace PSV.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class UserController : DefaultController
     {
@@ -19,7 +16,6 @@ namespace PSV.Controllers
         [HttpGet]
         public PageResponse<User> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
         {
-
             return userService.GetPage(new PageModel(page, perPage, search));
         }
 

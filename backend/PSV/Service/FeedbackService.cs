@@ -1,9 +1,6 @@
 ﻿using PSV.Model;
 using PSV.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PSV.Service
 {
@@ -11,7 +8,6 @@ namespace PSV.Service
     {
         public void Publish(int id)
         {
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
@@ -22,7 +18,6 @@ namespace PSV.Service
                     {
                         return;
                     }
-
                     feedback.Visible = true;
                     unitOfWork.Context.Feedbacks.Attach(feedback);
                     unitOfWork.Context.Entry(feedback).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -34,7 +29,6 @@ namespace PSV.Service
 
         public void Unpublish(int id)
         {
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
@@ -45,7 +39,6 @@ namespace PSV.Service
                     {
                         return;
                     }
-
                     feedback.Visible = false;
                     unitOfWork.Context.Feedbacks.Attach(feedback);
                     unitOfWork.Context.Entry(feedback).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -61,7 +54,6 @@ namespace PSV.Service
             {
                 return null;
             }
-
             try
             {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))

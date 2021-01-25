@@ -22,10 +22,10 @@ import { getRecepies } from '../../../services/RecepieService';
 class RecepieList extends TablePage {
 
     tableDescription = [
-        
+
         { key: 'patient', label: "Patient", transform: 'renderColumnUser' },
-        { key: 'medicine', label: "Medicine", transform: 'renderColumnMedicine' },
-        { key: 'amount', label: "Amount" }
+        { key: 'items', label: "Medicine", transform: 'renderColumnMedicine' },
+        { key: 'items', label: "Amount", transform: 'renderColumnCount' }
     ];
 
     constructor(props) {
@@ -36,26 +36,31 @@ class RecepieList extends TablePage {
     }
 
     renderColumnMedicine(item) {
-        if(!item) 
+        if(!item)
         {
             return '';
         }
 
-        return item.name;
+        return item[0].medicine.name;
+    }
+
+    renderColumnCount(item) {
+        if(!item)
+        {
+            return '';
+        }
+
+        return item[0].count;
     }
 
     renderColumnUser(item) {
 
-        if(!item) 
+        if(!item)
         {
             return '';
         }
 
         return item.firstName + " " + item.lastName;
-    }
-
-    componentDidMount() {
-
     }
 
     fetchData() {
@@ -84,7 +89,7 @@ class RecepieList extends TablePage {
 
             this.setState({
                 patiens: result,
-                
+
             });
         });
 
@@ -114,7 +119,7 @@ class RecepieList extends TablePage {
             }
 
             this.setState({
-                tableData: response.data.entities,
+                tableData: response.data.recepies,
                 total: response.data.total,
                 lockTable: false
             });
@@ -122,6 +127,11 @@ class RecepieList extends TablePage {
     }
 
     componentDidMount() {
+        if (this.props.auth.user.userType == 'PHARMACYST') {
+          this.setState({
+            showAdd: false
+          })
+        }
         this.fetchData();
     }
 
@@ -155,44 +165,6 @@ class RecepieList extends TablePage {
                         open={ Boolean(this.state.anchorEl) }
                         onClose={ () => this.handleMenuClose() }
                     >
-                        {
-                            !item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleMenuDelete(item) }>
-                                <ListItemIcon>
-                                    <DeleteIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.delete }/>
-                            </MenuItem>
-                        }
-                        {
-                            item[this.deletedField] &&
-                            <MenuItem onClick={ () => this.handleRestore(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={ strings.table.undo }/>
-                            </MenuItem>
-                        }
-
-                        {
-                            !item.isFree &&
-                            <MenuItem onClick={ () => this.handleUnblock(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Cancel"/>
-                            </MenuItem>
-                        }
-
-{
-                            item.isFree &&
-                            <MenuItem onClick={ () => this.handleBlock(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Reserve"/>
-                            </MenuItem>
-                        }
 
                     </Menu>
                 }

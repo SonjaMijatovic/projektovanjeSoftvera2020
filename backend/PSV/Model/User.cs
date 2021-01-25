@@ -13,7 +13,7 @@ namespace PSV.Model
         public string Password { get; set; }
         public string UserType { get; set; }
 
-        // Doctro
+        // Doctor
 
         public DoctorType DoctorType { get; set; }
 

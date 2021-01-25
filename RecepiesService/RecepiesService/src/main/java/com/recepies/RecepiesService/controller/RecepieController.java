@@ -19,6 +19,13 @@ public class RecepieController {
         return new ResponseEntity<Recepies>(Database.getInstance().getRecepies(), HttpStatus.OK);
 
     }
+    
+    @GetMapping(path = "/all")
+    public ResponseEntity<Recepies> get() {
+
+        return new ResponseEntity<Recepies>(Database.getInstance().getRecepies(), HttpStatus.OK);
+
+    }
 
     @PostMapping(path ="/")
     public ResponseEntity<Recepie> add(@RequestBody Recepie recepie) {

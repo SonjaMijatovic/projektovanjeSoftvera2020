@@ -11,8 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using PSV.Model;
 using PSV.Service;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace PSV.Controllers
 {
     [Route("api/[controller]")]

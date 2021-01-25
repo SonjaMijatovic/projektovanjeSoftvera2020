@@ -1,10 +1,6 @@
 package com.recepies.RecepiesService.model;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.*;
-import java.util.ArrayList;
 
 public class Database {
 
@@ -14,10 +10,10 @@ public class Database {
     public Database() {
         recepies = new Recepies();
 
-        Medicine med1 = new Medicine("Med 1");
-        Medicine med2 = new Medicine("Med 2");
+        Medicine med1 = new Medicine("Amoksicilin");
+        Medicine med2 = new Medicine("Panklav");
 
-        Patient pt1 = new Patient(1, "firstName", "lastName");
+        Patient pt1 = new Patient(1, "Jovan", "Jovanovic");
 
         Recepie recepie = new Recepie(pt1);
 

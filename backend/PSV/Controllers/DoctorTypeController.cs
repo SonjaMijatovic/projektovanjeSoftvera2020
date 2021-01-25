@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
 using PSV.Service;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace PSV.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class DoctorTypeController : DefaultController
     {
@@ -28,7 +22,7 @@ namespace PSV.Controllers
 
         [Route("/api/doctor-type")]
         [HttpPost]
-        public async Task<IActionResult> Add(DoctorType doctorType) 
+        public async Task<IActionResult> Add(DoctorType doctorType)
         {
             return Ok(doctorTypeService.Add(doctorType));
         }

@@ -53,11 +53,16 @@ class Home extends TablePage {
     }
 
     componentDidMount() {
+        let userType = this.props.auth.user.userType;
+        if (userType != 'ADMIN') {
+          var element = document.getElementsByClassName('MuiTableCell-head')[1]
+          element.innerText = ''
+        }
         this.fetchData();
     }
 
     getPageHeader() {
-        return <h1>Public Feedbacks</h1>;
+        return <h1>Feedbacks</h1>;
     }
 
     renderAddContent() {
@@ -88,13 +93,7 @@ class Home extends TablePage {
         });
     }
 
-    handleBlock(item) {
-        publishFeedback(item.id).then(response => {
-            this.fetchData();
-        })
-    }
-
-    handleUnblock(item) {
+    handleUnpublish(item) {
         unpublishFeedback(item.id).then(response => {
             this.fetchData();
         });
@@ -108,6 +107,8 @@ class Home extends TablePage {
 
         return(
             <TableCell>
+                {
+                userType == 'ADMIN' &&
                 <IconButton
                     aria-owns={ this.state.anchorEl ? ariaOwns : undefined }
                     aria-haspopup="true"
@@ -115,6 +116,7 @@ class Home extends TablePage {
                 >
                     <MoreVert/>
                 </IconButton>
+                }
                 {
                     ariaOwns === this.state.ariaOwns &&
                     <Menu
@@ -125,24 +127,13 @@ class Home extends TablePage {
                     >
                         {
                             item.visible && userType == 'ADMIN' &&
-                            <MenuItem onClick={ () => this.handleUnblock(item) }>
+                            <MenuItem onClick={ () => this.handleUnpublish(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
                                 <ListItemText inset primary="Unpublish"/>
                             </MenuItem>
                         }
-
-{
-                            !item.visible && userType == 'ADMIN' &&
-                            <MenuItem onClick={ () => this.handleBlock(item) }>
-                                <ListItemIcon>
-                                    <UndoIcon/>
-                                </ListItemIcon>
-                                <ListItemText inset primary="Publish"/>
-                            </MenuItem>
-                        }
-
                     </Menu>
                 }
 

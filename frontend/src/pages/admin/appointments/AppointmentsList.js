@@ -29,7 +29,7 @@ import DatePickerControl from '../../../components/controls/DatePickerControl';
 class AppointmentList extends TablePage {
 
     tableDescription = [
-        { key: 'date', label: "Date", transform: 'renderColumnDate' },
+        { key: 'date', label: "Date", transform: 'renderDate' },
         { key: 'doctor', label: "Doctor", transform: 'renderColumnUser' },
         { key: 'patient', label: "Patient", transform: 'renderColumnUser' },
         { key: 'isFree', label: "Is free", transform: 'renderColumnDeleted' }
@@ -53,8 +53,8 @@ class AppointmentList extends TablePage {
         return item.firstName + " " + item.lastName;
     }
 
-    componentDidMount() {
-
+    renderDate(item) {
+      return item.replace('T', ' ');
     }
 
     fetchData() {
@@ -90,7 +90,12 @@ class AppointmentList extends TablePage {
         getAppointments({
             page: this.state.searchData.page,
             perPage: this.state.searchData.perPage,
-            search: this.state.searchData.search.toLowerCase()
+            search: this.state.searchData.search.toLowerCase(),
+            doctor: this.state.data.doctor ? this.state.data.doctor.id : -1,
+            type: this.state.data.type ? this.state.data.type.value : '',
+            from: this.state.data.from ? new Date(this.state.data.from).getTime() : 0,
+            to: this.state.data.to ? new Date(this.state.data.to).getTime() : 0
+
         }).then(response => {
 
             if(!response.ok) {
@@ -108,6 +113,11 @@ class AppointmentList extends TablePage {
     }
 
     componentDidMount() {
+        let userType = this.props.auth.user.userType;
+        if (userType != 'PATIENT') {
+          var element = document.getElementsByClassName('MuiTableCell-head')[4]
+          element.innerText = ''
+        }
         this.fetchData();
     }
 
@@ -143,13 +153,13 @@ class AppointmentList extends TablePage {
         });
     }
 
-    handleUnblock(item) {
+    handleCancel(item) {
         cancelAppointment(item.id).then(response => {
             this.fetchData();
         })
     }
 
-    handleBlock(item) {
+    handleReserve(item) {
         reserveAppointment(item.id).then(response => {
             this.fetchData();
         });
@@ -178,8 +188,8 @@ class AppointmentList extends TablePage {
                     >
 
                         {
-                            !item.isFree && this.props.auth.user.userType != 'DOCTOR' &&
-                            <MenuItem onClick={ () => this.handleUnblock(item) }>
+                            !item.isFree &&
+                            <MenuItem onClick={ () => this.handleCancel(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
@@ -188,8 +198,8 @@ class AppointmentList extends TablePage {
                         }
 
 {
-                            item.isFree && this.props.auth.user.userType != 'DOCTOR' &&
-                            <MenuItem onClick={ () => this.handleBlock(item) }>
+                            item.isFree &&
+                            <MenuItem onClick={ () => this.handleReserve(item) }>
                                 <ListItemIcon>
                                     <UndoIcon/>
                                 </ListItemIcon>
@@ -205,6 +215,7 @@ class AppointmentList extends TablePage {
     }
 
     render() {
+      let userType = this.props.auth.user.userType;
 
         return (
             <Grid id='table-page'>
@@ -216,7 +227,8 @@ class AppointmentList extends TablePage {
                     <div className='filter-controls' style={{ display: 'flex',
                 flexDirection: 'flex-row', alignItems: 'center' }}>
 
-
+                    { userType == "PATIENT" &&
+                      <React.Fragment>
 
                             <div style={{ width: '250px' }}>
                                 <DatePickerControl
@@ -256,7 +268,7 @@ class AppointmentList extends TablePage {
                                     ] }
                                     selected={ this.state.data.type }
                                     onChange={ this.changeData }
-                                    label={ 'Type' }
+                                    label={ 'Priority' }
                                     name={ 'type' }
                                     nameKey={ 'name' }
                                     valueKey={ 'value' }
@@ -264,7 +276,8 @@ class AppointmentList extends TablePage {
                             </div>
 
                             <Button onClick={ () => this.fetchData() } >Find</Button>
-
+                            </React.Fragment>
+                          }
 
                         {
                             this.state.showAdd &&
@@ -276,8 +289,8 @@ class AppointmentList extends TablePage {
                     { this.renderTable(this.state.tableData) }
                 </Paper>
 
-                <Drawer id='drawer' anchor='right' open={  this.showDrawer() } onClose={ () => this.setPageState(PageState.View) } >
-                    <DrawerWrapper onBack={ () => this.setPageState(PageState.View) }>
+                <Drawer id='drawer' anchor='right' open={  this.showDrawer() } onClose={ this.onCancel } >
+                    <DrawerWrapper onBack={ () => this.handleMenuClose() }>
                         { this.renderDrawerContent() }
                     </DrawerWrapper>
                 </Drawer>

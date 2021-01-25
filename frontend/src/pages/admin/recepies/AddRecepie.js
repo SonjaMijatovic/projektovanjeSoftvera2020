@@ -48,7 +48,8 @@ class AddRecepie extends FormComponent {
         let data = {
             medicine: this.state.data.medicine,
             patient: this.state.data.patient,
-            doctor:  this.state.data.doctor ? { id: this.state.data.doctor.id} : null
+            doctor:  this.state.data.doctor ? { id: this.state.data.doctor.id} : null,
+            amount: parseFloat(this.state.data.amount)
         }
 
         addRecepies(data).then(response => {
