@@ -10,8 +10,8 @@ using PSV.Model;
 namespace PSV.Migrations
 {
     [DbContext(typeof(BackendContext))]
-    [Migration("20210603232001_initial")]
-    partial class initial
+    [Migration("20210613201404_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
