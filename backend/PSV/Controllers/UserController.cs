@@ -31,21 +31,7 @@ namespace PSV.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User userData)
         {
-            if (userData.Email == null || userData.Password == null || userData.FirstName == null || userData.LastName == null)
-            {
-                return BadRequest();
-            }
-
-            User user = userService.GetUserWithEmail(userData.Email);
-
-            if (user != null)
-            {
-                return BadRequest("User exists");
-            }
-
-            user = userService.Add(userData);
-
-            return Ok(user);
+            throw new NotImplementedException();
         }
 
         [Route("/api/users/block/{id}")]

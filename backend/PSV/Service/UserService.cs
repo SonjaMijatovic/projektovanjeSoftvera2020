@@ -9,14 +9,16 @@ namespace PSV.Service
 {
     public class UserService
     {
-        public void Block(int id) {
-
-            try {
+        public void Block(int id)
+        {
+            try
+            {
                 using (var unitOfWork = new UnitOfWork(new BackendContext()))
                 {
                     User user = unitOfWork.Users.Get(id);
 
-                    if (user == null) {
+                    if (user == null)
+                    {
                         return;
                     }
 
@@ -26,7 +28,9 @@ namespace PSV.Service
                     unitOfWork.Complete();
                 }
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+            }
         }
 
         public void Unlock(int id)
@@ -48,43 +52,14 @@ namespace PSV.Service
                     unitOfWork.Complete();
                 }
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+            }
         }
 
         public User Add(User user)
         {
-            if (user == null)
-            {
-                return null;
-            }
-            try
-            {
-                using (var unitOfWork = new UnitOfWork(new BackendContext()))
-                {
-                    user.DateCreated = DateTime.Now;
-                    user.DateUpdated = DateTime.Now;
-                    user.Deleted = false;
-                    user.Blocked = false;
-
-                    if(user.DoctorType != null)
-                    {
-                        user.DoctorType = unitOfWork.DoctorTypes.Get(user.DoctorType.Id);
-                    }
-
-                    if (user.UserType == null || user.UserType == "") {
-                        user.UserType = "PATIENT";
-                    }
-
-                    unitOfWork.Users.Add(user);
-                    unitOfWork.Complete();
-                }
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-
-            return user;
+            throw new NotImplementedException();
         }
 
         public User GetUserWithEmailAndPassword(string email, string password)
@@ -102,18 +77,11 @@ namespace PSV.Service
             }
         }
 
-        public User GetUserWithEmail(string email)
+        public User FindUserByEmail(string email)
         {
-            try
+            using (var unitOfWork = new UnitOfWork(new BackendContext()))
             {
-                using (var unitOfWork = new UnitOfWork(new BackendContext()))
-                {
-                    return unitOfWork.Users.GetUserWithEmail(email);
-                }
-            }
-            catch (Exception e)
-            {
-                return null;
+                return unitOfWork.Users.GetUserWithEmail(email);
             }
         }
 

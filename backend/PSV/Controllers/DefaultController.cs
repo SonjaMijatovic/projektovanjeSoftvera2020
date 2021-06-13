@@ -15,7 +15,7 @@ namespace PSV.Controllers
         {
             var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
 
-            return userService.GetUserWithEmail(email);
+            return userService.FindUserByEmail(email);
         }
     }
     
