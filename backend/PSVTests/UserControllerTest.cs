@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PSV.Controllers;
 using PSV.Model;
 using Xunit;
+using static PSVTests.UserTestUtil;
 
 namespace PSVTests
 {
@@ -11,19 +12,24 @@ namespace PSVTests
         public void UserController_RegisterUser()
         {
             var controller = new UserController();
+            var email = GenerateRandomString(10);
+            var name = GenerateRandomString(6);
+            var lastName = GenerateRandomString(6);
+            var pass = GenerateRandomString(12);
+            const string patientType = "PATIENT";
+            
             var result = controller.Register(new User
             {
-                Email = "test@test.com", FirstName = "Name", LastName = "LastName", Password = "12345",
-                UserType = "PATIENT"
+                Email = email, FirstName = name, LastName = lastName, Password = pass, UserType = patientType
             });
 
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var user = Assert.IsType<User>(okResult.Value);
             Assert.NotNull(user);
-            Assert.Equal("test@test.com", user.Email);
-            Assert.Equal("Name", user.FirstName);
-            Assert.Equal("LastName", user.LastName);
-            Assert.Equal("PATIENT", user.UserType);
+            Assert.Equal(email, user.Email);
+            Assert.Equal(name, user.FirstName);
+            Assert.Equal(lastName, user.LastName);
+            Assert.Equal(patientType, user.UserType);
         }
     }
 }
