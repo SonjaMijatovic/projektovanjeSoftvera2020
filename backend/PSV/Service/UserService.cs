@@ -100,9 +100,12 @@ namespace PSV.Service
             }
         }
 
-        public bool DoesUserExist(string userDataEmail)
+        public virtual bool DoesUserExist(string userDataEmail)
         {
-            throw new NotImplementedException();
+            using (var unitOfWork = new UnitOfWork(new BackendContext()))
+            {
+                return unitOfWork.Users.GetUserWithEmail(userDataEmail) != null;
+            }
         }
     }
 }
