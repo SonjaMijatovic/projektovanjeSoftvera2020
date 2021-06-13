@@ -8,5 +8,7 @@ namespace PSV.Core
     public interface IUnitOfWork : IDisposable
     {
         int Complete();
+
+        IUserRepository Users { get; set; }
     }
 }

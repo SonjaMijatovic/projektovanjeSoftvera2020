@@ -4,11 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PSV.Core;
 
 namespace PSV.Service
 {
     public class UserService
     {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UserService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public void Block(int id)
         {
             try
@@ -102,9 +110,9 @@ namespace PSV.Service
 
         public virtual bool DoesUserExist(string userDataEmail)
         {
-            using (var unitOfWork = new UnitOfWork(new BackendContext()))
+            using (_unitOfWork)
             {
-                return unitOfWork.Users.GetUserWithEmail(userDataEmail) != null;
+                return _unitOfWork.Users.GetUserWithEmail(userDataEmail) != null;
             }
         }
     }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PSV.Model;
+using PSV.Repository;
 using PSV.Service;
 
 namespace PSV.Controllers
@@ -18,7 +19,7 @@ namespace PSV.Controllers
     public class TokenController : ControllerBase
     {
         private IConfiguration configuration;
-        private UserService userService = new UserService();
+        private UserService userService = new UserService(new UnitOfWork(new BackendContext()));
 
         public TokenController(IConfiguration config)
         {
@@ -40,32 +41,35 @@ namespace PSV.Controllers
                 return BadRequest("Invalid credentials");
             }
 
-            if(user.Blocked)
+            if (user.Blocked)
             {
                 return BadRequest("Invalid credentials");
             }
 
-            var claims = new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                    new Claim("Id", user.Id.ToString()),
-                    new Claim("FirstName", user.FirstName),
-                    new Claim("LastName", user.LastName),
-                    new Claim("Email", user.Email)
-                   };
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim("Id", user.Id.ToString()),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
+                new Claim("Email", user.Email)
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
 
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
+            var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims,
+                expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
 
-            JsonResult result = new JsonResult(new {
+            JsonResult result = new JsonResult(new
+            {
                 auth = new JwtSecurityTokenHandler().WriteToken(token)
             });
 
-            return Ok(result );
+            return Ok(result);
         }
     }
 }

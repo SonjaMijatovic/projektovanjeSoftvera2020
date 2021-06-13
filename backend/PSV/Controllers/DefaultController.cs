@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
+using PSV.Repository;
 using PSV.Service;
 
 namespace PSV.Controllers
@@ -9,7 +10,7 @@ namespace PSV.Controllers
     [ApiController]
     public class DefaultController : ControllerBase
     {
-        protected UserService userService = new UserService();
+        protected UserService userService = new UserService(new UnitOfWork(new BackendContext()));
 
         protected User GetCurrentUser()
         {
@@ -18,5 +19,4 @@ namespace PSV.Controllers
             return userService.FindUserByEmail(email);
         }
     }
-    
 }

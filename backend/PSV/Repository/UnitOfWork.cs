@@ -22,12 +22,16 @@ namespace PSV.Repository
             Medicines = new MedicineRepository(this.context);
         }
 
-        public IUserRepository Users { get; private set; }
+        public UnitOfWork()
+        {
+        }
+
         public IAppointmentRepository Appointments { get; private set; }
         public IFeedbackRepository Feedbacks { get; private set; }
         public IVisitRepository Visits { get; private set; }
         public IDoctorTypeRepository DoctorTypes { get; private set; }
         public IMedicineRepository Medicines { get; private set; }
+
         public BackendContext Context
         {
             get { return context; }
@@ -37,6 +41,8 @@ namespace PSV.Repository
         {
             return context.SaveChanges();
         }
+
+        public IUserRepository Users { get; set; }
 
         public void Dispose()
         {
