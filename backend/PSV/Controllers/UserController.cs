@@ -14,7 +14,8 @@ namespace PSV.Controllers
         [Authorize]
         [Route("/api/users/all")]
         [HttpGet]
-        public PageResponse<User> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
+        public PageResponse<User> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage,
+            [FromQuery(Name = "search")] string search)
         {
             return userService.GetPage(new PageModel(page, perPage, search));
         }
@@ -31,7 +32,19 @@ namespace PSV.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User userData)
         {
-            throw new NotImplementedException();
+            if (userData.Email == null || userData.Password == null || userData.FirstName == null ||
+                userData.LastName == null)
+            {
+                return BadRequest("Not valid input data");
+            }
+
+            if (userService.DoesUserExist(userData.Email))
+            {
+                return BadRequest("User already exists");
+            }
+
+            User user = userService.Add(userData);
+            return Ok(user);
         }
 
         [Route("/api/users/block/{id}")]

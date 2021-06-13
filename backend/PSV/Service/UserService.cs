@@ -99,5 +99,10 @@ namespace PSV.Service
                 return null;
             }
         }
+
+        public bool DoesUserExist(string userDataEmail)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
