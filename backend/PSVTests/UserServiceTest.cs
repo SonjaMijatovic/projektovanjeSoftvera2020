@@ -7,7 +7,7 @@ namespace PSVTests
     public class UserServiceTest
     {
         [Fact]
-        public void GivenExistingUserEmailThenReturnTrue()
+        public void GivenExistingUserEmailThenReturnUserExists()
         {
             var userService = new Mock<UserService>();
             var mockUserEmail = "existingUser@test.com";
@@ -16,12 +16,13 @@ namespace PSVTests
         }
         
         [Fact]
-        public void GivenNewUserEmailThenReturnFalse()
+        public void GivenNewUserEmailThenReturnUserDoesNotExist()
         {
             var userService = new Mock<UserService>();
             var mockUserEmail = "newUser@test.com";
             userService.Setup(x => x.DoesUserExist(mockUserEmail)).Returns(false);
             Assert.False(userService.Object.DoesUserExist(mockUserEmail));
         }
+        
     }
 }

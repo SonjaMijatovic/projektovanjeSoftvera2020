@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -32,19 +33,24 @@ namespace PSV.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User userData)
         {
-            if (userData.Email == null || userData.Password == null || userData.FirstName == null ||
-                userData.LastName == null)
-            {
-                return BadRequest("Not valid input data");
-            }
-
             if (userService.DoesUserExist(userData.Email))
             {
                 return BadRequest("User already exists");
             }
 
-            User user = userService.Add(userData);
-            return Ok(user);
+            try
+            {
+                User user = userService.Add(userData);
+                return Ok(user);
+            }
+            catch (InvalidDataException)
+            {
+                return BadRequest("Not valid input data");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
         }
 
         [Route("/api/users/block/{id}")]
