@@ -67,7 +67,36 @@ namespace PSV.Service
 
         public User Add(User user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                return null;
+            }
+            try
+            {
+                using (_unitOfWork)
+                {
+                    user.DateCreated = DateTime.Now;
+                    user.DateUpdated = DateTime.Now;
+                    user.Deleted = false;
+                    user.Blocked = false;
+
+                    if(user.DoctorType != null)
+                    {
+                        user.DoctorType = _unitOfWork.DoctorTypes.Get(user.DoctorType.Id);
+                    }
+
+                    if (string.IsNullOrEmpty(user.UserType)) {
+                        user.UserType = "PATIENT";
+                    }
+                    _unitOfWork.Users.Add(user);
+                    _unitOfWork.Complete();
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            return user;
         }
 
         public User GetUserWithEmailAndPassword(string email, string password)

@@ -10,5 +10,6 @@ namespace PSV.Core
         int Complete();
 
         IUserRepository Users { get; set; }
+        IDoctorTypeRepository DoctorTypes { get; set; }
     }
 }

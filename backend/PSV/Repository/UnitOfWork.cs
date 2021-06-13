@@ -29,7 +29,6 @@ namespace PSV.Repository
         public IAppointmentRepository Appointments { get; private set; }
         public IFeedbackRepository Feedbacks { get; private set; }
         public IVisitRepository Visits { get; private set; }
-        public IDoctorTypeRepository DoctorTypes { get; private set; }
         public IMedicineRepository Medicines { get; private set; }
 
         public BackendContext Context
@@ -43,6 +42,7 @@ namespace PSV.Repository
         }
 
         public IUserRepository Users { get; set; }
+        public IDoctorTypeRepository DoctorTypes { get; set; }
 
         public void Dispose()
         {
