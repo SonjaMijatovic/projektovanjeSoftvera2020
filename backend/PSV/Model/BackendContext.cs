@@ -15,7 +15,7 @@ namespace PSV.Model
                 return;
             }
 
-            optionsBuilder.UseSqlServer("Server=localhost;Database=PSV1;User Id=sa;Password=reallyStrongPwd123");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=PSV;User Id=sa;Password=reallyStrongPassword123");
         }
 
         public BackendContext()
