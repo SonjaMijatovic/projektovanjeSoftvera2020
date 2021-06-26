@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
@@ -14,10 +15,10 @@ namespace PSV.Controllers
         [Authorize]
         [Route("/api/feedbacks/all")]
         [HttpGet]
-        public PageResponse<Feedback> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
+        public PageResponse<Feedback> GetAll([FromQuery(Name = "page")] int page,
+            [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
         {
-
-            return feedbackService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()));
+            throw new NotImplementedException();
         }
 
         [Authorize]
@@ -25,37 +26,28 @@ namespace PSV.Controllers
         [HttpGet]
         public PageResponse<Feedback> GetPublic()
         {
-
-            return feedbackService.GetPublic(new PageModel());
+            throw new NotImplementedException();
         }
-
 
         [Route("/api/feedbacks")]
         [HttpPost]
         public async Task<IActionResult> Add(Feedback feedbackData)
         {
-            feedbackData.User = GetCurrentUser();
-            Feedback feedback = feedbackService.Add(feedbackData);
-
-            return Ok(feedback);
+            throw new NotImplementedException();
         }
 
         [Route("/api/feedbacks/publish/{id}")]
         [HttpPost]
         public async Task<IActionResult> Publish(int id)
         {
-            feedbackService.Publish(id);
-
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [Route("/api/feedbacks/unpublish/{id}")]
         [HttpPost]
         public async Task<IActionResult> Unpublish(int id)
         {
-            feedbackService.Unpublish(id);
-
-            return Ok();
+            throw new NotImplementedException();
         }
     }
 }

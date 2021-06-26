@@ -30,7 +30,6 @@ namespace PSV.Repository
         public PageResponse<Feedback> GetPublic(PageModel model)
         {
             var query = BackendContext.Feedbacks.Include("User").Where(x => (x.Visible == true));
-
             
             return new PageResponse<Feedback>(query.OrderBy(x => x.Id).Skip(model.Page).Take(model.PerPage).ToList(), query.Count());
         }
