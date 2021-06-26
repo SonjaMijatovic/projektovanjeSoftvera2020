@@ -43,6 +43,7 @@ namespace PSV.Repository
 
         public IUserRepository Users { get; set; }
         public IDoctorTypeRepository DoctorTypes { get; set; }
+        public IFeedbackRepository Feedback { get; set; }
 
         public void Dispose()
         {

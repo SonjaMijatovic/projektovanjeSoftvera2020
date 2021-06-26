@@ -10,8 +10,6 @@ namespace PSV.Controllers
     [ApiController]
     public class FeedbackController : DefaultController
     {
-        private FeedbackService feedbackService = new FeedbackService();
-
         [Authorize]
         [Route("/api/feedbacks/all")]
         [HttpGet]

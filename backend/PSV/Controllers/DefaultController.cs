@@ -12,6 +12,7 @@ namespace PSV.Controllers
     {
         protected UserService userService = new UserService(new UnitOfWork(new BackendContext()));
 
+        protected FeedbackService feedbackService = new FeedbackService(new UnitOfWork(new BackendContext()));
         protected User GetCurrentUser()
         {
             var email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;

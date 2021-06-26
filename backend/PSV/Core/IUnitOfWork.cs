@@ -11,5 +11,7 @@ namespace PSV.Core
 
         IUserRepository Users { get; set; }
         IDoctorTypeRepository DoctorTypes { get; set; }
+        
+        IFeedbackRepository Feedback { get; set; }
     }
 }
