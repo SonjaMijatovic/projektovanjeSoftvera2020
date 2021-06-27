@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Controllers;
 using PSV.Model;
@@ -34,25 +35,27 @@ namespace PSVTests
             Assert.Equal(user, feedback.User);
             Assert.False(feedback.Visible);
         }
-        
+
         [Fact]
         public void FeedbackControllerTest_PublishFeedback()
         {
             var controller = new FeedbackController();
-            var feedbackId = 1;
+            Random random = new Random();
+            int feedbackId = random.Next();
             var result = controller.Publish(feedbackId);
 
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
-        
+
         [Fact]
         public void FeedbackControllerTest_UnpublishFeedback()
         {
             var controller = new FeedbackController();
-            var feedbackId = 1;
-            var result = controller.Publish(feedbackId);
+            Random random = new Random();
+            int feedbackId = random.Next();
+            var result = controller.Unpublish(feedbackId);
 
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
     }
 }
