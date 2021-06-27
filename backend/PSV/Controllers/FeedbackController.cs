@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Model;
@@ -7,16 +6,18 @@ using PSV.Service;
 
 namespace PSV.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class FeedbackController : DefaultController
     {
+
         [Authorize]
         [Route("/api/feedbacks/all")]
         [HttpGet]
-        public PageResponse<Feedback> GetAll([FromQuery(Name = "page")] int page,
-            [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
+        public PageResponse<Feedback> GetAll([FromQuery(Name = "page")] int page, [FromQuery(Name = "perPage")] int perPage, [FromQuery(Name = "search")] string search)
         {
-            throw new NotImplementedException();
+
+            return feedbackService.GetPage(new PageModel(page, perPage, search, GetCurrentUser()));
         }
 
         [Authorize]
@@ -24,28 +25,37 @@ namespace PSV.Controllers
         [HttpGet]
         public PageResponse<Feedback> GetPublic()
         {
-            throw new NotImplementedException();
+
+            return feedbackService.GetPublic(new PageModel());
         }
+
 
         [Route("/api/feedbacks")]
         [HttpPost]
         public async Task<IActionResult> Add(Feedback feedbackData)
         {
-            throw new NotImplementedException();
+            feedbackData.User = GetCurrentUser();
+            Feedback feedback = feedbackService.Add(feedbackData);
+
+            return Ok(feedback);
         }
 
         [Route("/api/feedbacks/publish/{id}")]
         [HttpPost]
         public async Task<IActionResult> Publish(int id)
         {
-            throw new NotImplementedException();
+            feedbackService.Publish(id);
+
+            return Ok();
         }
 
         [Route("/api/feedbacks/unpublish/{id}")]
         [HttpPost]
         public async Task<IActionResult> Unpublish(int id)
         {
-            throw new NotImplementedException();
+            feedbackService.Unpublish(id);
+
+            return Ok();
         }
     }
 }
