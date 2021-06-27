@@ -1,4 +1,6 @@
 using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PSV.Controllers;
 using PSV.Model;
@@ -13,26 +15,27 @@ namespace PSVTests
         public void FeedbackControllerTest_AddFeedback()
         {
             var controller = new FeedbackController();
-            var content = GenerateRandomString(30);
-            var email = GenerateRandomString(10);
-            var name = GenerateRandomString(6);
-            var lastName = GenerateRandomString(6);
-            var pass = GenerateRandomString(12);
-            const string patientType = "PATIENT";
-            var user = new User
+            
+            var mockedUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-                Email = email, FirstName = name, LastName = lastName, Password = pass, UserType = patientType
+                new Claim("Email", "test@test.com"),
+            }, "mock"));
+            
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = mockedUser }
             };
+            
+            var content = GenerateRandomString(30);
             var result = controller.Add(new Feedback
             {
-                Content = content, User = user, Visible = false
+                Content = content, Visible = false
             });
-
+            
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var feedback = Assert.IsType<Feedback>(okResult.Value);
             Assert.NotNull(feedback);
             Assert.Equal(content, feedback.Content);
-            Assert.Equal(user, feedback.User);
             Assert.False(feedback.Visible);
         }
 
@@ -44,7 +47,7 @@ namespace PSVTests
             int feedbackId = random.Next();
             var result = controller.Publish(feedbackId);
 
-            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.IsType<OkResult>(result.Result);
         }
 
         [Fact]
@@ -55,7 +58,7 @@ namespace PSVTests
             int feedbackId = random.Next();
             var result = controller.Unpublish(feedbackId);
 
-            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.IsType<OkResult>(result.Result);
         }
     }
 }

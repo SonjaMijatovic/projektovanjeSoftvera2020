@@ -23,7 +23,7 @@ namespace PSVTests
             feedbackRepositoryMock.Setup(m => m.Add(mockFeedback));
 
             var unitOfWorkMock = new Mock<IUnitOfWork>();
-            unitOfWorkMock.Setup(m => m.Feedback).Returns(feedbackRepositoryMock.Object);
+            unitOfWorkMock.Setup(m => m.Feedbacks).Returns(feedbackRepositoryMock.Object);
             unitOfWorkMock.Setup(m => m.Users).Returns(userRepositoryMock.Object);
 
             var feedbackService = new FeedbackService(unitOfWorkMock.Object);
@@ -42,7 +42,7 @@ namespace PSVTests
             feedbackRepositoryMock.Setup(m => m.Add(null));
 
             var unitOfWorkMock = new Mock<IUnitOfWork>();
-            unitOfWorkMock.Setup(m => m.Feedback).Returns(feedbackRepositoryMock.Object);
+            unitOfWorkMock.Setup(m => m.Feedbacks).Returns(feedbackRepositoryMock.Object);
 
             var feedbackService = new FeedbackService(unitOfWorkMock.Object);
             var addedFeedback = feedbackService.Add(null);

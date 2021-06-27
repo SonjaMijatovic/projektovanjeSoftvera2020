@@ -79,7 +79,7 @@ namespace PSV.Service
 
                 User user = _unitOfWork.Users.Get(feedback.User.Id);
                 feedback.User = user;
-                _unitOfWork.Feedback.Add(feedback);
+                _unitOfWork.Feedbacks.Add(feedback);
                 _unitOfWork.Complete();
             }
             catch (Exception e)
