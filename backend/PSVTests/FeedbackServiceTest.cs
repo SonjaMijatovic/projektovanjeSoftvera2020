@@ -1,3 +1,4 @@
+using System;
 using Moq;
 using PSV.Core;
 using PSV.Model;
@@ -25,7 +26,26 @@ namespace PSVTests
             unitOfWorkMock.Setup(m => m.Feedback).Returns(feedbackRepositoryMock.Object);
 
             var feedbackService = new FeedbackService(unitOfWorkMock.Object);
-            Assert.Equal(mockFeedback, feedbackService.Add(mockFeedback));
+            var addedFeedback = feedbackService.Add(mockFeedback);
+            Assert.Equal(mockFeedback, addedFeedback);
+            Assert.False(addedFeedback.Visible);
+            Assert.False(addedFeedback.Deleted);
+            Assert.NotEqual(addedFeedback.DateCreated, DateTime.MinValue);
+            Assert.NotEqual(addedFeedback.DateUpdated, DateTime.MinValue);
+        }
+
+        [Fact]
+        public void GivenFeedbackThatIsNullThenAddingFeedbackReturnsNull()
+        {
+            var feedbackRepositoryMock = new Mock<IFeedbackRepository>();
+            feedbackRepositoryMock.Setup(m => m.Add(null));
+
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(m => m.Feedback).Returns(feedbackRepositoryMock.Object);
+
+            var feedbackService = new FeedbackService(unitOfWorkMock.Object);
+            var addedFeedback = feedbackService.Add(null);
+            Assert.Null(addedFeedback);
         }
     }
 }
