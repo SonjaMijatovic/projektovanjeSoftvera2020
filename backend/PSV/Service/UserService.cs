@@ -68,25 +68,26 @@ namespace PSV.Service
             {
                 return null;
             }
+
             try
             {
-                    user.DateCreated = DateTime.Now;
-                    user.DateUpdated = DateTime.Now;
-                    user.Deleted = false;
-                    user.Blocked = false;
+                user.DateCreated = DateTime.Now;
+                user.DateUpdated = DateTime.Now;
+                user.Deleted = false;
+                user.Blocked = false;
 
-                    if (user.DoctorType != null)
-                    {
-                        user.DoctorType = _unitOfWork.DoctorTypes.Get(user.DoctorType.Id);
-                    }
+                if (user.DoctorType != null)
+                {
+                    user.DoctorType = _unitOfWork.DoctorTypes.Get(user.DoctorType.Id);
+                }
 
-                    if (string.IsNullOrEmpty(user.UserType))
-                    {
-                        user.UserType = "PATIENT";
-                    }
+                if (string.IsNullOrEmpty(user.UserType))
+                {
+                    user.UserType = "PATIENT";
+                }
 
-                    _unitOfWork.Users.Add(user);
-                    _unitOfWork.Complete();
+                _unitOfWork.Users.Add(user);
+                _unitOfWork.Complete();
             }
             catch (Exception e)
             {
