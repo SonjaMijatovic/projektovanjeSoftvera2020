@@ -24,6 +24,7 @@ namespace PSVTests
 
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             unitOfWorkMock.Setup(m => m.Feedback).Returns(feedbackRepositoryMock.Object);
+            unitOfWorkMock.Setup(m => m.Users).Returns(userRepositoryMock.Object);
 
             var feedbackService = new FeedbackService(unitOfWorkMock.Object);
             var addedFeedback = feedbackService.Add(mockFeedback);
