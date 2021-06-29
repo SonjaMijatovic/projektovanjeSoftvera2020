@@ -17,7 +17,7 @@ namespace PSVTests
             var mockFeedback = new Feedback {Content = "Test content", User = mockUser, Visible = false};
 
             var userRepositoryMock = new Mock<IUserRepository>();
-            userRepositoryMock.Setup(m => m.Get(1)).Returns(mockUser).Verifiable();
+            userRepositoryMock.Setup(m => m.Get(new Random().Next())).Returns(mockUser).Verifiable();
 
             var feedbackRepositoryMock = new Mock<IFeedbackRepository>();
             feedbackRepositoryMock.Setup(m => m.Add(mockFeedback));

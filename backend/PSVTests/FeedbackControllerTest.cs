@@ -16,7 +16,7 @@ namespace PSVTests
         {
             var controller = new FeedbackController();
             
-            var mockedUser = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            var mockedUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim("Email", "test@test.com"),
             }, "mock"));
