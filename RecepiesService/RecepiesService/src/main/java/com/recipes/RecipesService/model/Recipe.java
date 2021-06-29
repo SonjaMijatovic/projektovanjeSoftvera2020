@@ -1,15 +1,15 @@
-package com.recepies.RecepiesService.model;
+package com.recipes.RecipesService.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recepie implements Serializable  {
+public class Recipe implements Serializable  {
 
     private int id;
     private Patient patient;
-    private ArrayList<RecepieItem> items = new ArrayList<>();
+    private ArrayList<RecipeItem> items = new ArrayList<>();
 
-    public Recepie() {}
+    public Recipe() {}
     public int getId() {
         return id;
     }
@@ -23,7 +23,7 @@ public class Recepie implements Serializable  {
         this.id = id;
     }
 
-    public void setItems(ArrayList<RecepieItem> items) {
+    public void setItems(ArrayList<RecipeItem> items) {
         this.items = items;
     }
 
@@ -31,11 +31,11 @@ public class Recepie implements Serializable  {
         return patient;
     }
 
-    public ArrayList<RecepieItem> getItems() {
+    public ArrayList<RecipeItem> getItems() {
         return items;
     }
 
-    public Recepie(Patient patient) {
+    public Recipe(Patient patient) {
         this.patient = patient;
     }
 }

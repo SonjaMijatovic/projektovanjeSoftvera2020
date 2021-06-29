@@ -1,8 +1,9 @@
-package com.recepies.RecepiesService.model;
+package com.recipes.RecipesService.model;
 
 import java.io.Serializable;
 
 public class Medicine implements Serializable {
+	
     private String name;
 
     public Medicine(){}

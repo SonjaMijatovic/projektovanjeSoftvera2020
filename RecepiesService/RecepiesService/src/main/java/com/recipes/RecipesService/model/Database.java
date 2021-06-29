@@ -1,41 +1,41 @@
-package com.recepies.RecepiesService.model;
+package com.recipes.RecipesService.model;
 
 import java.io.*;
 
 public class Database {
 
     private static Database instance;
-    private Recepies recepies;
+    private Recipes recipes;
 
     public Database() {
-        recepies = new Recepies();
+       setup();
+       save();
+       load();
+        
+    }
+    
+    private void setup() {
+    	 recipes = new Recipes();
 
-        Medicine med1 = new Medicine("Amoksicilin");
-        Medicine med2 = new Medicine("Panklav");
+         Medicine medicine = new Medicine("Amoksicilin");
 
-        Patient pt1 = new Patient(1, "Jovan", "Jovanovic");
+         Patient patient = new Patient(1, "Jovan", "Jovanovic");
 
-        Recepie recepie = new Recepie(pt1);
+         Recipe recepie = new Recipe(patient);
 
-        RecepieItem item1 = new RecepieItem(med1, 5);
-        RecepieItem item2 = new RecepieItem(med2, 6);
+         RecipeItem item1 = new RecipeItem(medicine, 2);
+         
+         recepie.getItems().add(item1);
 
-        recepie.getItems().add(item1);
-        recepie.getItems().add(item2);
-
-        recepies.getRecepies().add(recepie);
-
-        save();
-
-        load();
+         recipes.getRecepies().add(recepie);
     }
 
-    public Recepies getRecepies() {
-        return recepies;
+    public Recipes getAll() {
+        return recipes;
     }
 
-    public void setRecepies(Recepies recepies) {
-        this.recepies = recepies;
+    public void setRecepies(Recipes recepies) {
+        this.recipes = recepies;
     }
 
     public static Database getInstance() {
@@ -53,7 +53,7 @@ public class Database {
                     = new FileInputStream("data.ser");
             ObjectInputStream objectInputStream
                     = new ObjectInputStream(fileInputStream);
-            recepies = (Recepies) objectInputStream.readObject();
+            recipes = (Recipes) objectInputStream.readObject();
             objectInputStream.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class Database {
         try {
             FileOutputStream fout = new FileOutputStream("data.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fout);
-            oos.writeObject(recepies);
+            oos.writeObject(recipes);
         } catch (IOException e) {
             e.printStackTrace();
         }

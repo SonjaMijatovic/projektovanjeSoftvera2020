@@ -1,13 +1,13 @@
-package com.recepies.RecepiesService;
+package com.recipes.RecipesService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RecepiesServiceApplication {
+public class RecipesServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RecepiesServiceApplication.class, args);
+		SpringApplication.run(RecipesServiceApplication.class, args);
 	}
 
 }

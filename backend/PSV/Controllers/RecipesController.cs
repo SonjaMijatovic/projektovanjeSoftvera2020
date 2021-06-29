@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,23 +10,24 @@ using PSV.Model;
 namespace PSV.Controllers
 {
     [ApiController]
-    public class RecepieController : DefaultController
+    public class RecipesController : DefaultController
     {
+        private const String RecipesServiceBaseUrl = "http://localhost:8080/recipes/";
+
         [HttpGet]
         [Route("/api/recepies/{id}")]
         public async Task<ActionResult<string>> Get(int id)
         {
             try
             {
-                string url = "http://localhost:8080/recepies/" + id;
-                using (HttpClient client = new HttpClient())
-                {
-                    return await client.GetStringAsync(url);
-                }
+                string url = RecipesServiceBaseUrl + id;
+                using HttpClient client = new HttpClient();
+                return await client.GetStringAsync(url);
             }
-            catch (Exception e) { }
-
-            return Ok();
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpGet]
@@ -34,15 +36,16 @@ namespace PSV.Controllers
         {
             try
             {
-                string url = "http://localhost:8080/recepies/all";
+                string url = RecipesServiceBaseUrl + "all";
                 using (HttpClient client = new HttpClient())
                 {
                     return await client.GetStringAsync(url);
                 }
             }
-            catch (Exception e) { }
-
-            return Ok();
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [HttpPost]
@@ -59,23 +62,25 @@ namespace PSV.Controllers
                         firstName = recepie.Patient.FirstName,
                         lastName = recepie.Patient.LastName,
                     },
-                    items = new[] {
-                        new {
-                            medicine = new { name = recepie.Medicine.Name },
+                    items = new[]
+                    {
+                        new
+                        {
+                            medicine = new {name = recepie.Medicine.Name},
                             count = recepie.Amount
-                        }}
+                        }
+                    }
                 };
-                string url = "http://localhost:8080/recepies/";
                 using (HttpClient client = new HttpClient())
                 {
-                    return await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(newRecepie), UnicodeEncoding.UTF8, "application/json"));
+                    return await client.PostAsync(RecipesServiceBaseUrl,
+                        new StringContent(JsonConvert.SerializeObject(newRecepie), Encoding.UTF8, "application/json"));
                 }
             }
             catch (Exception e)
             {
-
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
-            return null;
         }
     }
 }

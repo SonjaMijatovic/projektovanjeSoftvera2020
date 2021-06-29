@@ -1,4 +1,4 @@
-package com.recepies.RecepiesService.model;
+package com.recipes.RecipesService.model;
 
 import java.io.Serializable;
 

@@ -1,14 +1,14 @@
-package com.recepies.RecepiesService.model;
+package com.recipes.RecipesService.model;
 
 import java.io.Serializable;
 
-public class RecepieItem implements Serializable  {
+public class RecipeItem implements Serializable  {
 
     private Medicine medicine;
     private double count;
 
-    public RecepieItem() {}
-    public RecepieItem(Medicine medicine, double count) {
+    public RecipeItem() {}
+    public RecipeItem(Medicine medicine, double count) {
         this.medicine = medicine;
         this.count = count;
     }
